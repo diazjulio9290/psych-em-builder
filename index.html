@@ -597,10 +597,6 @@
           <span id="themeLabel">Light</span>
         </button>
         <button class="btn" id="btnReset">Reset</button>
-        <button class="btn btn-primary" id="btnCopy">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-          Copy note
-        </button>
       </div>
     </header>
 
@@ -776,7 +772,6 @@
       reasonText: document.getElementById('reasonText'),
       notePreview: document.getElementById('notePreview'),
       previewMeta: document.getElementById('previewMeta'),
-      btnCopy: document.getElementById('btnCopy'),
       btnCopyPreview: document.getElementById('btnCopyPreview'),
       btnTheme: document.getElementById('btnTheme'),
       themeLabel: document.getElementById('themeLabel'),
@@ -1136,7 +1131,6 @@
     Object.values(checks).forEach(c => c.addEventListener('change', render));
     els.visitType.addEventListener('change', render);
     els.timeMinutes.addEventListener('input', render);
-    els.btnCopy.addEventListener('click', copyNote);
     els.btnCopyPreview.addEventListener('click', copyNote);
     els.btnReset.addEventListener('click', resetAll);
     els.btnSuggestLow.addEventListener('click', setLowDefaults);

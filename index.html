@@ -1116,7 +1116,22 @@
       els.visitType.value = 'In person';
       useTimeWhenAvailable = false;
       els.btnToggleTime.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;opacity:0.6"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Use time when available';
-      setTemplate(currentTemplate);
+      // Deselect all template tabs
+      els.tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', false); });
+      // Clear suggested code and MDM badge
+      els.suggestedCode.textContent = '';
+      els.badge.className = 'badge';
+      els.badge.textContent = '';
+      els.reasonText.textContent = '';
+      els.notePreview.textContent = '';
+      els.previewMeta.textContent = '';
+      // Clear flow diagram
+      els.flowBase.textContent = '';
+      els.flowArrow1.style.display = 'none';
+      els.flowTherapy.style.display = 'none';
+      els.flowArrow2.style.display = 'none';
+      els.flowLong.style.display = 'none';
+      els.flowTotal.textContent = '';
       toast('Reset complete.');
     }
 

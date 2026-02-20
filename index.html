@@ -4,1173 +4,246 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="Structured psychiatric E&M note builder with MDM scoring, 99213/99214 suggestions, and 2026 billing add-ons (90833, G2211). No PHI. Prototype tool for clinical documentation." />
-  <meta name="author" content="Psych E&M Note Builder" />
-  <meta property="og:title" content="Psych E&M Note Builder" />
-  <meta property="og:description" content="Structured checklist for psychiatric E&M documentation with suggested coding. No patient identifiers." />
-  <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#0c1017" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='20' width='100' height='100' fill='%235b8def'/><text x='50' y='68' text-anchor='middle' font-size='50' fill='white' font-family='sans-serif' font-weight='bold'>E</text></svg>" />
-  <title>Psych E&M Note Builder</title>
+  <title>Psych E&M Note Builder - Time Itemized</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0c1017;
-      --surface: rgba(255,255,255,0.04);
-      --surface2: rgba(255,255,255,0.065);
-      --surface3: rgba(255,255,255,0.09);
-      --border: rgba(255,255,255,0.08);
-      --border2: rgba(255,255,255,0.12);
-      --text: #e8eaf0;
-      --text2: rgba(255,255,255,0.68);
-      --text3: rgba(255,255,255,0.45);
-      --blue: #5b8def;
-      --blue-glow: rgba(91,141,239,0.15);
-      --violet: #a78bfa;
-      --violet-glow: rgba(167,139,250,0.12);
-      --green: #34d399;
-      --green-dim: rgba(52,211,153,0.14);
-      --amber: #fbbf24;
-      --amber-dim: rgba(251,191,36,0.12);
-      --red: #f87171;
-      --red-dim: rgba(248,113,113,0.12);
-      --code-bg: rgba(0,0,0,0.35);
-      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.25);
-      --shadow-lg: 0 4px 12px rgba(0,0,0,0.2), 0 24px 64px rgba(0,0,0,0.35);
-      --r: 14px;
-      --r2: 10px;
-      --font: 'DM Sans', system-ui, -apple-system, sans-serif;
-      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+      --bg: #0c1017; --surface: rgba(255,255,255,0.04); --surface2: rgba(255,255,255,0.065);
+      --surface3: rgba(255,255,255,0.09); --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.12);
+      --text: #e8eaf0; --text2: rgba(255,255,255,0.68); --text3: rgba(255,255,255,0.45);
+      --blue: #5b8def; --blue-glow: rgba(91,141,239,0.15); --violet: #a78bfa;
+      --violet-glow: rgba(167,139,250,0.12); --green: #34d399; --green-dim: rgba(52,211,153,0.14);
+      --amber: #fbbf24; --amber-dim: rgba(251,191,36,0.12); --red: #f87171; --red-dim: rgba(248,113,113,0.12);
+      --code-bg: rgba(0,0,0,0.35); --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.25);
+      --r: 14px; --r2: 10px; --font: 'DM Sans', system-ui, sans-serif; --mono: 'JetBrains Mono', monospace;
     }
-
     html[data-theme="light"] {
-      --bg: #f4f5f7;
-      --surface: rgba(255,255,255,0.85);
-      --surface2: rgba(255,255,255,0.95);
-      --surface3: #ffffff;
-      --border: rgba(0,0,0,0.07);
-      --border2: rgba(0,0,0,0.11);
-      --text: #1a1d25;
-      --text2: rgba(26,29,37,0.58);
-      --text3: rgba(26,29,37,0.38);
-      --blue: #3b6fd8;
-      --blue-glow: rgba(59,111,216,0.08);
-      --violet: #7c5cc4;
-      --violet-glow: rgba(124,92,196,0.06);
-      --green: #16a368;
-      --green-dim: rgba(22,163,104,0.10);
-      --amber: #d97706;
-      --amber-dim: rgba(217,119,6,0.08);
-      --red: #dc2626;
-      --red-dim: rgba(220,38,38,0.07);
-      --code-bg: #f0f2f5;
-      --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06);
-      --shadow-lg: 0 4px 12px rgba(0,0,0,0.04), 0 24px 64px rgba(0,0,0,0.08);
+      --bg: #f4f5f7; --surface: rgba(255,255,255,0.85); --surface2: rgba(255,255,255,0.95);
+      --surface3: #ffffff; --border: rgba(0,0,0,0.07); --border2: rgba(0,0,0,0.11);
+      --text: #1a1d25; --text2: rgba(26,29,37,0.58); --text3: rgba(26,29,37,0.38);
+      --blue: #3b6fd8; --blue-glow: rgba(59,111,216,0.08); --violet: #7c5cc4;
+      --green: #16a368; --green-dim: rgba(22,163,104,0.10); --amber: #d97706; --amber-dim: rgba(217,119,6,0.08);
+      --red: #dc2626; --red-dim: rgba(220,38,38,0.07); --code-bg: #f0f2f5;
     }
-
     * { box-sizing: border-box; margin: 0; }
-
-    body {
-      font-family: var(--font);
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Ambient background glow */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(ellipse 900px 600px at 15% 8%, var(--blue-glow), transparent),
-        radial-gradient(ellipse 700px 500px at 80% 20%, var(--violet-glow), transparent),
-        radial-gradient(ellipse 500px 400px at 50% 90%, var(--green-dim), transparent);
-      z-index: 0;
-    }
-
-    .shell {
-      position: relative;
-      z-index: 1;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 16px 48px;
-    }
-
-    /* ─── Top Bar ─── */
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 16px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(16px);
-      flex-wrap: wrap;
-    }
-
-    .brand { display: flex; align-items: center; gap: 12px; }
-
-    .logo {
-      width: 38px; height: 38px;
-      border-radius: 11px;
-      background: linear-gradient(135deg, var(--blue), var(--violet));
-      position: relative;
-      flex-shrink: 0;
-    }
-    .logo::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.35), transparent 55%);
-    }
-
-    .brand-title { font-size: 15px; font-weight: 600; letter-spacing: -0.2px; }
-    .brand-sub { font-size: 12px; color: var(--text2); margin-top: 1px; }
-
-    .topbar-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-
-    .status-pill {
-      display: inline-flex; align-items: center; gap: 7px;
-      padding: 7px 11px;
-      border-radius: 999px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      font-size: 11px; color: var(--text2);
-      letter-spacing: 0.2px;
-    }
-    .status-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 0 3px var(--green-dim);
-    }
-
-    .btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 8px 12px;
-      border-radius: var(--r2);
-      border: 1px solid var(--border2);
-      background: var(--surface2);
-      color: var(--text);
-      font-family: var(--font);
-      font-size: 12.5px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.12s ease;
-      user-select: none;
-      white-space: nowrap;
-    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+    .shell { max-width: 1200px; margin: 0 auto; padding: 20px 16px 48px; }
+    
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r); }
+    .brand-title { font-size: 15px; font-weight: 600; }
+    .brand-sub { font-size: 12px; color: var(--text2); }
+    .btn { padding: 8px 12px; border-radius: var(--r2); border: 1px solid var(--border2); background: var(--surface2); color: var(--text); font-size: 12.5px; cursor: pointer; }
     .btn:hover { background: var(--surface3); }
-    .btn:active { transform: scale(0.98); }
-    .btn svg { width: 14px; height: 14px; opacity: 0.7; }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--blue), var(--violet));
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #fff;
-      box-shadow: 0 4px 18px var(--blue-glow);
-    }
-    .btn-primary:hover { filter: brightness(1.08); background: linear-gradient(135deg, var(--blue), var(--violet)); }
-
-    /* ─── Grid ─── */
-    .grid {
-      margin-top: 16px;
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 14px;
-      align-items: start;
-    }
+    .btn-primary { background: linear-gradient(135deg, var(--blue), var(--violet)); color: #fff; border: none; }
+    
+    .grid { margin-top: 16px; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 14px; align-items: start; }
     @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
-
-    /* ─── Card ─── */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(16px);
-      overflow: hidden;
-    }
-
-    .card-head {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .card-head h2 { font-size: 14px; font-weight: 600; letter-spacing: -0.1px; }
-    .card-head .sub { font-size: 11.5px; color: var(--text2); margin-top: 2px; }
-
+    
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .card-head { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;}
+    .card-head h2 { font-size: 14px; font-weight: 600; }
     .card-body { padding: 14px 16px 18px; }
+    
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .field { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; border-radius: var(--r2); background: var(--surface2); border: 1px solid var(--border); }
+    .field-label { font-size: 11px; color: var(--text2); font-weight: 500; text-transform: uppercase; }
+    select, input[type="number"] { width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border2); background: var(--code-bg); color: var(--text); font-size: 13px; }
+    
+    /* Time Breakdown Section */
+    .time-breakdown { display: none; background: var(--blue-glow); border: 1px solid var(--blue); padding: 12px; border-radius: var(--r2); margin-bottom: 14px; }
+    .time-breakdown.active { display: block; }
+    .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+    .time-item { display: flex; align-items: center; justify-content: space-between; font-size: 12px; }
+    .time-item input { width: 60px; padding: 4px 8px; text-align: right;}
+    .total-time-display { margin-top: 10px; font-weight: bold; font-size: 14px; text-align: right; color: var(--blue); }
 
-    /* ─── Tabs ─── */
-    .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
-    .tab {
-      padding: 7px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text2);
-      font-family: var(--font);
-      font-size: 12.5px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      user-select: none;
-    }
-    .tab:hover { background: var(--surface2); color: var(--text); }
-    .tab.active {
-      background: var(--blue-glow);
-      border-color: var(--blue);
-      color: var(--text);
-      box-shadow: 0 0 0 1px var(--blue-glow);
-    }
+    .groups { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .group { padding: 12px; border-radius: var(--r2); background: var(--surface2); border: 1px solid var(--border); }
+    .group h3 { font-size: 11.5px; font-weight: 600; text-transform: uppercase; color: var(--text2); margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+    .check { display: flex; gap: 9px; padding: 4px 0; cursor: pointer; }
+    .check input { width: 16px; height: 16px; accent-color: var(--blue); }
+    .check-text { font-size: 13px; }
 
-    /* ─── Row / Fields ─── */
-    .row2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-    @media (max-width: 780px) { .row2 { grid-template-columns: 1fr; } }
-
-    .field {
-      display: flex; flex-direction: column; gap: 6px;
-      padding: 10px 12px;
-      border-radius: var(--r2);
-      background: var(--surface2);
-      border: 1px solid var(--border);
-    }
-    .field-label {
-      font-size: 11px;
-      color: var(--text2);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .field-label .note { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--text3); }
-
-    select, input[type="number"] {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid var(--border2);
-      background: var(--code-bg);
-      color: var(--text);
-      font-family: var(--font);
-      font-size: 13px;
-      outline: none;
-      transition: border-color 0.15s ease;
-    }
-    select:focus, input[type="number"]:focus { border-color: var(--blue); }
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
-
-    /* ─── Warning Banner ─── */
-    .warn-banner {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: var(--r2);
-      background: var(--amber-dim);
-      border: 1px solid rgba(251,191,36,0.2);
-      margin-bottom: 14px;
-      font-size: 12px;
-      line-height: 1.5;
-      color: var(--text2);
-    }
-    .warn-banner strong { color: var(--text); }
-    .warn-icon {
-      width: 20px; height: 20px;
-      border-radius: 6px;
-      background: rgba(251,191,36,0.2);
-      border: 1px solid rgba(251,191,36,0.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700;
-      flex-shrink: 0;
-      color: var(--amber);
-    }
-
-    /* ─── Checklist Groups ─── */
-    .groups {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    @media (max-width: 780px) { .groups { grid-template-columns: 1fr; } }
-
-    .group {
-      padding: 12px;
-      border-radius: var(--r2);
-      background: var(--surface2);
-      border: 1px solid var(--border);
-    }
-    .group h3 {
-      font-size: 11.5px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text2);
-      margin-bottom: 8px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* Add-on group special styling */
-    .group.addon {
-      border-color: var(--violet);
-      background: var(--violet-glow);
-    }
-    .group.addon h3 {
-      color: var(--violet);
-      border-bottom-color: rgba(167,139,250,0.18);
-    }
-
-    .check {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      padding: 7px 8px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.12s ease;
-    }
-    .check:hover { background: var(--surface3); }
-
-    .check input[type="checkbox"] {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 16px; height: 16px;
-      border-radius: 5px;
-      border: 1.5px solid var(--border2);
-      background: var(--surface);
-      margin-top: 1px;
-      flex-shrink: 0;
-      cursor: pointer;
-      transition: all 0.12s ease;
-      position: relative;
-    }
-    .check input[type="checkbox"]:checked {
-      background: var(--blue);
-      border-color: var(--blue);
-    }
-    .check input[type="checkbox"]:checked::after {
-      content: '';
-      position: absolute;
-      left: 4.5px; top: 1.5px;
-      width: 5px; height: 9px;
-      border: solid #fff;
-      border-width: 0 1.8px 1.8px 0;
-      transform: rotate(40deg);
-    }
-
-    .group.addon .check input[type="checkbox"]:checked {
-      background: var(--violet);
-      border-color: var(--violet);
-    }
-
-    .check-text { font-size: 13px; color: var(--text); line-height: 1.3; }
-    .check-hint { font-size: 11.5px; color: var(--text3); margin-top: 2px; line-height: 1.35; }
-
-    /* ─── Utility Buttons Row ─── */
-    .util-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
-    }
-
-    .sub-note { font-size: 11px; color: var(--text3); margin-top: 8px; line-height: 1.5; }
-
-    /* ─── Right Column: Score + Note ─── */
-    .score-card {
-      padding: 14px;
-      border-radius: var(--r2);
-      background: var(--surface2);
-      border: 1px solid var(--border);
-    }
-
-    .score-top {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .score-label { font-size: 10.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px; font-weight: 500; }
-    .score-code {
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      font-family: var(--mono);
-      line-height: 1;
-      margin-top: 4px;
-    }
-
-    .badge {
-      display: inline-flex; align-items: center;
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: 11px; font-weight: 500;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text2);
-    }
-    .badge.good { background: var(--green-dim); border-color: var(--green); color: var(--green); }
-    .badge.warn { background: var(--amber-dim); border-color: var(--amber); color: var(--amber); }
-    .badge.bad  { background: var(--red-dim); border-color: var(--red); color: var(--red); }
-    html[data-theme="light"] .badge.good { color: #0d7a4a; }
-    html[data-theme="light"] .badge.warn { color: #92600a; }
-    html[data-theme="light"] .badge.bad  { color: #b91c1c; }
-
-    .score-reason {
-      font-size: 12.5px;
-      color: var(--text2);
-      line-height: 1.5;
-      margin-top: 10px;
-    }
-
-    .right-stack { display: flex; flex-direction: column; gap: 12px; }
-
-    /* ─── Note Preview ─── */
-    .note-box {
-      border-radius: var(--r2);
-      border: 1px solid var(--border);
-      background: var(--code-bg);
-      overflow: hidden;
-    }
-    .note-head {
-      padding: 8px 12px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      font-size: 11px;
-      color: var(--text3);
-      background: var(--surface);
-    }
-    pre {
-      margin: 0;
-      padding: 12px;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      font-family: var(--mono);
-      font-size: 12px;
-      line-height: 1.55;
-      color: var(--text);
-      max-height: 520px;
-      overflow-y: auto;
-    }
-    pre::-webkit-scrollbar { width: 5px; }
-    pre::-webkit-scrollbar-track { background: transparent; }
-    pre::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
-
-    /* ─── Logic Flow Diagram ─── */
-    .flow-card {
-      padding: 14px;
-      border-radius: var(--r2);
-      background: var(--surface2);
-      border: 1px solid var(--border);
-    }
-    .flow-card h4 {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text3);
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-
-    .flow {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .flow-node {
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 11.5px;
-      font-weight: 600;
-      font-family: var(--mono);
-      white-space: nowrap;
-    }
-    .flow-node.base { background: var(--blue-glow); border: 1px solid var(--blue); color: var(--blue); }
-    .flow-node.addon-v { background: var(--violet-glow); border: 1px solid var(--violet); color: var(--violet); }
-    .flow-node.addon-g { background: var(--green-dim); border: 1px solid var(--green); color: var(--green); }
-    .flow-arrow { color: var(--text3); font-size: 14px; }
-    .flow-label { font-size: 10.5px; color: var(--text3); }
-
-    /* ─── Info Card ─── */
-    .info-card {
-      padding: 12px;
-      border-radius: var(--r2);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      font-size: 12px;
-      color: var(--text2);
-      line-height: 1.55;
-    }
-    .info-card .info-label {
-      font-size: 10.5px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text3);
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    /* ─── Toast ─── */
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(8px);
-      background: var(--surface3);
-      border: 1px solid var(--border2);
-      padding: 9px 14px;
-      border-radius: var(--r2);
-      color: var(--text);
-      font-size: 12.5px;
-      box-shadow: var(--shadow-lg);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      backdrop-filter: blur(16px);
-      max-width: 92vw;
-      z-index: 100;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    /* ─── Animations ─── */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .topbar { animation: fadeIn 0.4s ease both; }
-    .grid > .card:first-child { animation: fadeIn 0.4s 0.08s ease both; }
-    .grid > .card:last-child { animation: fadeIn 0.4s 0.16s ease both; }
-
-    /* ─── Responsive ─── */
-    @media (max-width: 640px) {
-      .topbar { flex-direction: column; align-items: flex-start; }
-      .topbar-right { width: 100%; flex-wrap: wrap; }
-      .tabs { margin-top: 4px; }
-    }
+    .score-card { padding: 14px; border-radius: var(--r2); background: var(--surface2); border: 1px solid var(--border); margin-bottom: 14px; }
+    .score-code { font-size: 26px; font-weight: 700; font-family: var(--mono); color: var(--blue); }
+    
+    .note-box { border-radius: var(--r2); border: 1px solid var(--border); background: var(--code-bg); }
+    .note-head { padding: 8px 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 11px; background: var(--surface); }
+    pre { padding: 12px; white-space: pre-wrap; font-family: var(--mono); font-size: 12px; line-height: 1.5; color: var(--text); }
   </style>
 </head>
-
 <body>
   <div class="shell">
-    <!-- Top Bar -->
     <header class="topbar">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <div class="brand-title">Psych E&amp;M Note Builder</div>
-          <div class="brand-sub">Structured checklist &middot; Suggested code &middot; No PHI</div>
-        </div>
+      <div>
+        <div class="brand-title">Psych E&amp;M Note Builder</div>
+        <div class="brand-sub">Itemized Time &amp; MDM Billing Automation</div>
       </div>
-      <div class="topbar-right">
-        <div class="status-pill"><span class="status-dot"></span>Prototype &middot; local only</div>
-        <button class="btn" id="btnTheme">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-          <span id="themeLabel">Light</span>
-        </button>
-        <button class="btn" id="btnReset">Reset</button>
+      <div>
+        <button class="btn" id="btnTheme">Toggle Theme</button>
       </div>
     </header>
 
-    <!-- Main Grid -->
     <div class="grid">
-      <!-- Left: Checklist -->
       <div class="card">
         <div class="card-head">
-          <div>
-            <h2>Templates</h2>
-            <p class="sub">Pick a scenario to pre-fill defaults</p>
-          </div>
-          <div class="tabs" role="tablist">
-            <button class="tab active" data-template="adhd" role="tab" aria-selected="true">ADHD</button>
-            <button class="tab" data-template="anxiety" role="tab" aria-selected="false">Anxiety</button>
-            <button class="tab" data-template="depression" role="tab" aria-selected="false">Depression</button>
-            <button class="tab" data-template="combo" role="tab" aria-selected="false">Anxiety + ADHD</button>
-          </div>
+          <h2>Encounter Details</h2>
+          <button class="btn btn-primary" id="btnToggleTime">Switch to Time-Based Billing</button>
         </div>
-
         <div class="card-body">
-          <!-- Visit fields -->
-          <div class="row2">
-            <div class="field">
-              <div class="field-label">
-                <span>Visit type</span>
-                <span class="note">For note wording</span>
-              </div>
-              <select id="visitType">
-                <option value="In person">In person</option>
-                <option value="Telehealth video">Telehealth &mdash; video</option>
-                <option value="Telehealth phone">Telehealth &mdash; phone</option>
-              </select>
+          
+          <div class="time-breakdown" id="timeSection">
+            <h3 style="font-size: 13px; margin-bottom: 4px;">Itemized Time Breakdown (Minutes)</h3>
+            <p style="font-size: 11px; color: var(--text2);">Enter exact minutes spent on the calendar day to generate an audit-proof note.</p>
+            <div class="time-grid">
+              <div class="time-item"><span>Chart Review / Prep:</span> <input type="number" id="tPrep" min="0" value="0"></div>
+              <div class="time-item"><span>Face-to-Face / Counseling:</span> <input type="number" id="tFace" min="0" value="0"></div>
+              <div class="time-item"><span>Ordering Meds / Tests:</span> <input type="number" id="tOrder" min="0" value="0"></div>
+              <div class="time-item"><span>Charting / Coordination:</span> <input type="number" id="tDoc" min="0" value="0"></div>
             </div>
-            <div class="field">
-              <div class="field-label">
-                <span>Total time (min)</span>
-                <span class="note">Optional, time-based</span>
-              </div>
-              <input id="timeMinutes" type="number" min="0" max="240" value="0" />
-            </div>
+            <div class="total-time-display">Total: <span id="totalTimeNum">0</span> mins</div>
           </div>
 
-          <!-- Warning -->
-          <div class="warn-banner">
-            <div class="warn-icon">!</div>
-            <div><strong>No patient identifiers.</strong> This tool uses checkboxes and templated text. Copy output into the EHR and personalize there.</div>
-          </div>
-
-          <!-- Checklist Groups -->
-          <div class="groups">
-            <div class="group">
-              <h3>Problems Addressed</h3>
-              <label class="check"><input type="checkbox" id="p1"/><div><div class="check-text">One stable condition</div><div class="check-hint">Often supports low complexity.</div></div></label>
-              <label class="check"><input type="checkbox" id="p2"/><div><div class="check-text">Two+ stable conditions</div><div class="check-hint">Common pathway to moderate.</div></div></label>
-              <label class="check"><input type="checkbox" id="p3"/><div><div class="check-text">One condition worsening</div><div class="check-hint">Moderate problem complexity.</div></div></label>
-            </div>
-
-            <div class="group">
-              <h3>Data Reviewed</h3>
-              <label class="check"><input type="checkbox" id="d1"/><div><div class="check-text">Rating scales reviewed</div><div class="check-hint">PHQ-9, GAD-7, Vanderbilt, ASRS</div></div></label>
-              <label class="check"><input type="checkbox" id="d2"/><div><div class="check-text">Collateral from caregiver</div><div class="check-hint">Independent historian.</div></div></label>
-              <label class="check"><input type="checkbox" id="d3"/><div><div class="check-text">Outside records reviewed</div><div class="check-hint">Prior eval, school, therapist, PCP.</div></div></label>
-              <label class="check"><input type="checkbox" id="d4"/><div><div class="check-text">Labs reviewed or ordered</div><div class="check-hint">Only if clinically appropriate.</div></div></label>
-            </div>
-
-            <div class="group">
-              <h3>Risk &amp; Management</h3>
-              <label class="check"><input type="checkbox" id="r1"/><div><div class="check-text">Prescription drug management</div><div class="check-hint">Start, stop, dose change, controlled meds.</div></div></label>
-              <label class="check"><input type="checkbox" id="r2"/><div><div class="check-text">Safety risk assessed</div><div class="check-hint">SI/HI assessment, safety plan.</div></div></label>
-              <label class="check"><input type="checkbox" id="r3"/><div><div class="check-text">Side effects reviewed</div><div class="check-hint">Sleep, appetite, GI, activation, sedation.</div></div></label>
-              <label class="check"><input type="checkbox" id="r4"/><div><div class="check-text">Controlled substance monitoring</div><div class="check-hint">PDMP, refill expectations, storage.</div></div></label>
-            </div>
-
-            <div class="group">
-              <h3>Exam &amp; MSE</h3>
-              <label class="check"><input type="checkbox" id="m1"/><div><div class="check-text">MSE documented</div><div class="check-hint">Appearance, mood, affect, thought, insight.</div></div></label>
-              <label class="check"><input type="checkbox" id="m2"/><div><div class="check-text">Functional status addressed</div><div class="check-hint">School, home, relationships, sleep.</div></div></label>
-              <label class="check"><input type="checkbox" id="m3"/><div><div class="check-text">Substance use screening</div><div class="check-hint">Age and setting appropriate.</div></div></label>
-              <label class="check"><input type="checkbox" id="m4"/><div><div class="check-text">Follow-up interval in plan</div><div class="check-hint">Return window and precautions.</div></div></label>
-            </div>
-
-            <!-- NEW: Billing Add-ons -->
-            <div class="group addon" style="grid-column: 1 / -1;">
-              <h3>Billing Add-ons &middot; 2026</h3>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0;">
-                <label class="check"><input type="checkbox" id="t90833"/><div><div class="check-text">+90833 Psychotherapy</div><div class="check-hint">16–37 min distinct psychotherapy session alongside E&amp;M.</div></div></label>
-                <label class="check"><input type="checkbox" id="g2211"/><div><div class="check-text">+G2211 Longitudinal Care</div><div class="check-hint">Ongoing primary management of serious/complex condition.</div></div></label>
+          <div id="mdmSection">
+            <p style="font-size: 12px; color: var(--text2); margin-bottom: 10px;">Select elements to calculate MDM severity.</p>
+            <div class="groups">
+              <div class="group">
+                <h3>Problems Addressed</h3>
+                <label class="check"><input type="checkbox" id="p1"><span class="check-text">1 stable condition</span></label>
+                <label class="check"><input type="checkbox" id="p2"><span class="check-text">2+ stable conditions</span></label>
+                <label class="check"><input type="checkbox" id="p3"><span class="check-text">1 condition worsening</span></label>
+              </div>
+              <div class="group">
+                <h3>Risk & Management</h3>
+                <label class="check"><input type="checkbox" id="r1"><span class="check-text">Rx drug management</span></label>
+                <label class="check"><input type="checkbox" id="r2"><span class="check-text">Safety risk assessed</span></label>
+                <label class="check"><input type="checkbox" id="r3"><span class="check-text">Side effects reviewed</span></label>
               </div>
             </div>
           </div>
-
-          <!-- Utility buttons -->
-          <div class="util-row">
-            <button class="btn" id="btnSuggestLow">Low complexity set</button>
-            <button class="btn" id="btnSuggestMod">Moderate complexity set</button>
-            <button class="btn" id="btnToggleTime">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;opacity:0.6"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              Use time when available
-            </button>
-          </div>
-          <div class="sub-note">Suggestion logic is intentionally conservative. Final coding depends on clinician judgment and payer rules.</div>
+          
         </div>
       </div>
 
-      <!-- Right: Output -->
       <div class="card">
-        <div class="card-head">
-          <div>
-            <h2>Suggested Level &amp; Note</h2>
-            <p class="sub">Instant feedback &middot; Copy into EHR</p>
-          </div>
-        </div>
-
-        <div class="card-body right-stack">
-          <!-- Score -->
+        <div class="card-head"><h2>Suggested Code &amp; Documentation</h2></div>
+        <div class="card-body">
           <div class="score-card">
-            <div class="score-top">
-              <div>
-                <div class="score-label">Suggested code</div>
-                <div class="score-code" id="suggestedCode">99213</div>
-              </div>
-              <div class="badge warn" id="badge">Based on MDM</div>
-            </div>
-            <div class="score-reason" id="reasonText">Select checklist items to build MDM support. Add time for time-based coding.</div>
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text2);">Suggested Code</div>
+            <div class="score-code" id="suggestedCode">99212</div>
+            <div id="codeReason" style="font-size: 12px; margin-top: 6px; color: var(--text2);"></div>
           </div>
-
-          <!-- Visual Logic Flow -->
-          <div class="flow-card">
-            <h4>Code stacking logic</h4>
-            <div class="flow" id="flowDiagram">
-              <div class="flow-node base" id="flowBase">99213</div>
-              <span class="flow-arrow" id="flowArrow1" style="display:none;">+</span>
-              <div class="flow-node addon-v" id="flowTherapy" style="display:none;">90833</div>
-              <span class="flow-arrow" id="flowArrow2" style="display:none;">+</span>
-              <div class="flow-node addon-g" id="flowLong" style="display:none;">G2211</div>
-              <span class="flow-label" id="flowTotal" style="margin-left:auto;"></span>
-            </div>
-          </div>
-
-          <!-- Note Preview -->
           <div class="note-box">
-            <div class="note-head">
-              <span>Generated note preview</span>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <span id="previewMeta">ADHD follow-up</span>
-                <button class="btn btn-primary" id="btnCopyPreview" style="padding:5px 8px;">Copy</button>
-              </div>
-            </div>
+            <div class="note-head"><span>Documentation Snippet</span> <button class="btn" id="btnCopy" style="padding: 2px 8px;">Copy</button></div>
             <pre id="notePreview"></pre>
-          </div>
-
-          <!-- Info -->
-          <div class="info-card">
-            <div class="info-label">How this works</div>
-            Problems, data, and risk map to MDM (2-of-3 rule). Prescription management + 2 problems typically reaches 99214.
-            Time mode uses 30–39 min → 99214. Add-on codes (+90833, +G2211) stack on top of the base E&amp;M when checked.
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
-
   <script>
     const els = {
-      tabs: Array.from(document.querySelectorAll('.tab')),
-      visitType: document.getElementById('visitType'),
-      timeMinutes: document.getElementById('timeMinutes'),
-      suggestedCode: document.getElementById('suggestedCode'),
-      badge: document.getElementById('badge'),
-      reasonText: document.getElementById('reasonText'),
-      notePreview: document.getElementById('notePreview'),
-      previewMeta: document.getElementById('previewMeta'),
-      btnCopyPreview: document.getElementById('btnCopyPreview'),
-      btnTheme: document.getElementById('btnTheme'),
-      themeLabel: document.getElementById('themeLabel'),
-      btnReset: document.getElementById('btnReset'),
-      btnSuggestLow: document.getElementById('btnSuggestLow'),
-      btnSuggestMod: document.getElementById('btnSuggestMod'),
       btnToggleTime: document.getElementById('btnToggleTime'),
-      toast: document.getElementById('toast'),
-      flowBase: document.getElementById('flowBase'),
-      flowTherapy: document.getElementById('flowTherapy'),
-      flowLong: document.getElementById('flowLong'),
-      flowArrow1: document.getElementById('flowArrow1'),
-      flowArrow2: document.getElementById('flowArrow2'),
-      flowTotal: document.getElementById('flowTotal'),
+      timeSection: document.getElementById('timeSection'),
+      mdmSection: document.getElementById('mdmSection'),
+      tPrep: document.getElementById('tPrep'), tFace: document.getElementById('tFace'),
+      tOrder: document.getElementById('tOrder'), tDoc: document.getElementById('tDoc'),
+      totalTimeNum: document.getElementById('totalTimeNum'),
+      p1: document.getElementById('p1'), p2: document.getElementById('p2'), p3: document.getElementById('p3'),
+      r1: document.getElementById('r1'), r2: document.getElementById('r2'), r3: document.getElementById('r3'),
+      suggestedCode: document.getElementById('suggestedCode'),
+      codeReason: document.getElementById('codeReason'),
+      notePreview: document.getElementById('notePreview'),
+      btnCopy: document.getElementById('btnCopy'),
+      btnTheme: document.getElementById('btnTheme')
     };
 
-    const checkIds = [
-      'p1','p2','p3',
-      'd1','d2','d3','d4',
-      'r1','r2','r3','r4',
-      'm1','m2','m3','m4',
-      't90833','g2211'
-    ];
+    let isTimeMode = false;
 
-    const checks = checkIds.reduce((acc, id) => {
-      acc[id] = document.getElementById(id);
-      return acc;
-    }, {});
-
-    let currentTemplate = 'adhd';
-    let useTimeWhenAvailable = false;
-
-    const templates = {
-      adhd: {
-        name: 'ADHD follow-up',
-        defaults: ['p1','r3','m1','m2','m4'],
-        dx: ['ADHD'],
-        symptomLine: 'Attention and executive function symptoms reviewed. Functioning in school and home discussed.'
-      },
-      anxiety: {
-        name: 'Anxiety follow-up',
-        defaults: ['p1','r3','m1','m2','m4'],
-        dx: ['Generalized anxiety'],
-        symptomLine: 'Anxiety severity and triggers reviewed. Sleep and somatic symptoms discussed.'
-      },
-      depression: {
-        name: 'Depression follow-up',
-        defaults: ['p1','r3','m1','m2','m4'],
-        dx: ['Depressive disorder'],
-        symptomLine: 'Mood, anhedonia, energy, appetite and sleep reviewed. Safety screening completed.'
-      },
-      combo: {
-        name: 'Anxiety + ADHD',
-        defaults: ['p2','d1','r1','r3','m1','m2','m4'],
-        dx: ['ADHD','Generalized anxiety'],
-        symptomLine: 'Combined symptom review completed. Attention, anxiety, sleep, and functional impact discussed.'
-      }
-    };
-
-    /* ── Template handling ── */
-    function setTemplate(key) {
-      currentTemplate = key;
-      els.tabs.forEach(t => {
-        const active = t.dataset.template === key;
-        t.classList.toggle('active', active);
-        t.setAttribute('aria-selected', active);
-      });
-      clearAllChecks();
-      templates[key].defaults.forEach(id => { checks[id].checked = true; });
-      els.previewMeta.textContent = templates[key].name;
-      render();
+    // Time calculations based on PDF brackets
+    function calculateTimeCode(total) {
+      if (total >= 55) return { code: '99215 + 99417', text: '55+ mins requires prolonged service add-on.' };
+      if (total >= 40) return { code: '99215', text: '40-54 minutes maps to 99215.' };
+      if (total >= 30) return { code: '99214', text: '30-39 minutes maps to 99214.' };
+      if (total >= 20) return { code: '99213', text: '20-29 minutes maps to 99213.' };
+      if (total >= 10) return { code: '99212', text: '10-19 minutes maps to 99212.' };
+      return { code: 'N/A', text: 'Less than 10 minutes cannot be billed using time.' };
     }
 
-    function clearAllChecks() {
-      Object.values(checks).forEach(c => c.checked = false);
+    // MDM calculations based on PDF 2-of-3 rules
+    function calculateMDMCode() {
+      let prob = 1; // minimal
+      if (els.p2.checked || els.p3.checked) prob = 3; // moderate
+      else if (els.p1.checked) prob = 2; // low
+
+      let risk = 1; // minimal
+      if (els.r1.checked || els.r2.checked) risk = 3; // moderate
+      else if (els.r3.checked) risk = 2; // low
+
+      // Simplified 2-of-3 assuming Data is minimal for this demo
+      let mdmLevel = Math.max(Math.min(prob, risk), 1); 
+      
+      if (prob === 3 && risk === 3) return { code: '99214', text: 'MDM: Moderate (Moderate Problems + Moderate Risk)' };
+      if (prob >= 2 && risk >= 2) return { code: '99213', text: 'MDM: Low (Low Problems + Low Risk)' };
+      return { code: '99212', text: 'MDM: Straightforward' };
     }
 
-    function setLowDefaults() {
-      clearAllChecks();
-      ['p1','m1','m2','m4'].forEach(id => checks[id].checked = true);
-      render();
-      toast('Low complexity set applied.');
-    }
+    function generateNote() {
+      if (isTimeMode) {
+        const prep = parseInt(els.tPrep.value) || 0;
+        const face = parseInt(els.tFace.value) || 0;
+        const order = parseInt(els.tOrder.value) || 0;
+        const doc = parseInt(els.tDoc.value) || 0;
+        const total = prep + face + order + doc;
+        
+        els.totalTimeNum.textContent = total;
+        const result = calculateTimeCode(total);
+        els.suggestedCode.textContent = result.code;
+        els.codeReason.textContent = "Based on total time: " + result.text;
 
-    function setModerateDefaults() {
-      clearAllChecks();
-      ['p2','d1','r1','r2','r3','m1','m2','m4'].forEach(id => checks[id].checked = true);
-      render();
-      toast('Moderate complexity set applied.');
-    }
+        let note = `Time-Based Billing Breakdown (Total Time: ${total} minutes)\nThis level of service is based on total time spent by the provider on the calendar day of the encounter.\n\n`;
+        if (prep > 0) note += `* ${prep} minutes: Preparing to see the patient, including review of prior records/tests.\n`;
+        if (face > 0) note += `* ${face} minutes: Performing examination/evaluation and providing face-to-face counseling/education regarding treatment.\n`;
+        if (order > 0) note += `* ${order} minutes: Ordering medications, tests, or procedures.\n`;
+        if (doc > 0) note += `* ${doc} minutes: Documenting clinical information and care coordination.\n`;
+        note += `\nTotal Provider Time: ${total} minutes.`;
+        
+        els.notePreview.textContent = note;
 
-    /* ── MDM Scoring ── */
-    function levelRank(lvl) {
-      return ({ minimal: 0, low: 1, moderate: 2, high: 3 })[lvl] ?? 0;
-    }
-
-    function scoreProblems() {
-      if (checks.p2.checked || checks.p3.checked) return 'moderate';
-      if (checks.p1.checked) return 'low';
-      return 'minimal';
-    }
-
-    function scoreData() {
-      const items = ['d1','d3','d4'].filter(id => checks[id].checked).length;
-      if (checks.d2.checked) return 'moderate';
-      if (items >= 2) return 'moderate';
-      if (items >= 1) return 'low';
-      return 'minimal';
-    }
-
-    function scoreRisk() {
-      if (checks.r1.checked || checks.r2.checked || checks.r4.checked) return 'moderate';
-      if (checks.r3.checked) return 'low';
-      return 'minimal';
-    }
-
-    function mdmFrom2of3(pLvl, dLvl, rLvl) {
-      const levels = [pLvl, dLvl, rLvl];
-      const countAtLeast = lvl => levels.filter(x => levelRank(x) >= levelRank(lvl)).length;
-      if (countAtLeast('high') >= 2) return 'high';
-      if (countAtLeast('moderate') >= 2) return 'moderate';
-      if (countAtLeast('low') >= 2) return 'low';
-      return 'minimal';
-    }
-
-    function scoreMDM() {
-      const problems = scoreProblems();
-      const data = scoreData();
-      const risk = scoreRisk();
-      const mdm = mdmFrom2of3(problems, data, risk);
-
-      const problemJust = problems === 'moderate'
-        ? 'Problems: Moderate (2+ stable or worsening condition).'
-        : problems === 'low'
-          ? 'Problems: Low (1 stable chronic condition).'
-          : 'Problems: Minimal (not specified).';
-
-      const dataJust = (() => {
-        const parts = [];
-        if (checks.d1.checked) parts.push('rating scales');
-        if (checks.d2.checked) parts.push('caregiver collateral');
-        if (checks.d3.checked) parts.push('outside records');
-        if (checks.d4.checked) parts.push('labs');
-        if (!parts.length) return 'Data: Minimal (none documented).';
-        return `Data: ${data === 'moderate' ? 'Moderate' : 'Low'} (${parts.join(', ')}).`;
-      })();
-
-      const riskJust = (() => {
-        if (risk === 'moderate') {
-          const parts = [];
-          if (checks.r1.checked) parts.push('Rx management');
-          if (checks.r2.checked) parts.push('safety assessment');
-          if (checks.r4.checked) parts.push('controlled substance monitoring');
-          return `Risk: Moderate (${parts.join(', ')}).`;
-        }
-        if (risk === 'low') return 'Risk: Low (side effects reviewed).';
-        return 'Risk: Minimal (not specified).';
-      })();
-
-      return { problems, data, risk, mdm, justification: `${problemJust} ${dataJust} ${riskJust}` };
-    }
-
-    function scoreTime() {
-      const mins = Number(els.timeMinutes.value || 0);
-      if (mins >= 40) return { code: '99214', label: 'Time 40+ minutes' };
-      if (mins >= 30) return { code: '99214', label: 'Time 30–39 minutes' };
-      if (mins >= 20) return { code: '99213', label: 'Time 20–29 minutes' };
-      if (mins > 0) return { code: '99213', label: 'Time under 20 minutes' };
-      return null;
-    }
-
-    /* ── Note Builder ── */
-    function addLine(lines, text) {
-      const t = (text || '').trim();
-      if (t) lines.push(t);
-    }
-
-    function joinSentences(arr) {
-      return arr.filter(Boolean).join(' ');
-    }
-
-    function buildNote(signals, chosen) {
-      const t = templates[currentTemplate];
-      const visitType = els.visitType.value;
-      const lines = [];
-
-      addLine(lines, 'PSYCHIATRY E AND M MEDICATION MANAGEMENT NOTE (Established Patient)');
-      addLine(lines, 'Visit type: ' + visitType);
-      addLine(lines, 'Diagnoses: ' + t.dx.join(', '));
-      addLine(lines, '');
-
-      addLine(lines, 'Interval history: ' + t.symptomLine);
-      addLine(lines, '');
-
-      if (checks.r2.checked) {
-        addLine(lines, 'Safety: Suicide and harm risk assessment completed. Safety plan and escalation guidance reviewed.');
-      }
-
-      if (checks.m1.checked) {
-        addLine(lines, 'MSE: Appearance and behavior appropriate. Speech normal. Thought process linear. Insight and judgment fair to good.');
-      }
-
-      if (checks.m2.checked) {
-        addLine(lines, 'Function: School, home routine, relationships, and sleep routine reviewed. Functional impact discussed.');
-      }
-
-      if (checks.m3.checked) {
-        addLine(lines, 'Substance: Screening documented as age and setting appropriate.');
-      }
-
-      const dataSentences = [];
-      if (checks.d1.checked) dataSentences.push('Rating scales reviewed (e.g. PHQ-9, GAD-7, Vanderbilt, ASRS as applicable).');
-      if (checks.d2.checked) dataSentences.push('Collateral obtained from caregiver as independent historian.');
-      if (checks.d3.checked) dataSentences.push('Outside records reviewed (e.g. prior eval, school report, therapist note, PCP note).');
-      if (checks.d4.checked) dataSentences.push('Labs reviewed or ordered as clinically appropriate.');
-
-      if (dataSentences.length) {
-        addLine(lines, 'Data: ' + joinSentences(dataSentences));
-      }
-
-      if (checks.r1.checked) {
-        addLine(lines, 'Medications: Prescription drug management performed today. Risks, benefits, alternatives, and monitoring plan reviewed.');
-      } else if (checks.r3.checked) {
-        addLine(lines, 'Medications: Current regimen reviewed. Side effects reviewed and monitoring guidance discussed.');
-      }
-
-      if (checks.r4.checked) {
-        addLine(lines, 'Controlled substances: Monitoring and policy requirements discussed (e.g. PDMP review, refill expectations, safe storage).');
-      }
-
-      // Psychotherapy add-on documentation
-      if (checks.t90833.checked) {
-        addLine(lines, '');
-        addLine(lines, 'Psychotherapy: A separate and distinct psychotherapy session was provided (16–37 minutes). Focus included coping strategies, psychoeducation, and therapeutic alliance. This service is distinct from the E and M component.');
-      }
-
-      // Longitudinal care documentation
-      if (checks.g2211.checked) {
-        addLine(lines, '');
-        addLine(lines, 'Longitudinal care: G2211 applied. This provider serves as the ongoing, primary point of care for the management of a serious or complex psychiatric condition. The therapeutic relationship is longitudinal and continuous.');
-      }
-
-      const planSentences = ['Plan: Continue treatment plan with shared decision-making.'];
-      if (checks.m4.checked) {
-        planSentences.push('Follow-up interval set and return precautions reviewed.');
-      }
-      addLine(lines, '');
-      addLine(lines, joinSentences(planSentences));
-      addLine(lines, '');
-
-      // Coding summary
-      let codingSummary = '';
-      if (chosen.basis === 'time') {
-        codingSummary = 'MDM and coding summary: Time-based selection. Total time: ' + chosen.timeMinutes + ' minutes.';
       } else {
-        codingSummary = 'MDM and coding summary: ' + signals.justification;
+        const result = calculateMDMCode();
+        els.suggestedCode.textContent = result.code;
+        els.codeReason.textContent = result.text;
+        els.notePreview.textContent = "MDM Summary:\nThis level of service is based on Medical Decision Making.\n- Problems: " + (els.p2.checked || els.p3.checked ? "Moderate" : els.p1.checked ? "Low" : "Minimal") + "\n- Risk: " + (els.r1.checked || els.r2.checked ? "Moderate (Rx management/safety)" : els.r3.checked ? "Low" : "Minimal") + "\n\n(Note: If insurance audits require specific time itemizations, toggle to Time-Based Billing.)";
       }
-
-      // Append add-ons to coding summary
-      const addons = [];
-      if (checks.t90833.checked) addons.push('+90833 (psychotherapy add-on, 16–37 min)');
-      if (checks.g2211.checked) addons.push('+G2211 (longitudinal care complexity)');
-      if (addons.length) codingSummary += ' Add-on codes billed: ' + addons.join(', ') + '.';
-
-      addLine(lines, codingSummary);
-
-      return lines.join('\n');
     }
-
-    /* ── Render ── */
-    function render() {
-      const signals = scoreMDM();
-      const timeScore = scoreTime();
-
-      let chosen = { basis: 'mdm', code: signals.mdm === 'moderate' ? '99214' : '99213' };
-
-      if (useTimeWhenAvailable && timeScore) {
-        chosen = { basis: 'time', code: timeScore.code, timeMinutes: Number(els.timeMinutes.value || 0), timeLabel: timeScore.label };
-      }
-
-      // Build display code with add-ons
-      let codeDisplay = chosen.code;
-      if (checks.t90833.checked) codeDisplay += ' + 90833';
-      if (checks.g2211.checked) codeDisplay += ' + G2211';
-
-      els.suggestedCode.textContent = codeDisplay;
-
-      // Update flow diagram
-      els.flowBase.textContent = chosen.code;
-      const showTherapy = checks.t90833.checked;
-      const showLong = checks.g2211.checked;
-      els.flowArrow1.style.display = showTherapy ? '' : 'none';
-      els.flowTherapy.style.display = showTherapy ? '' : 'none';
-      els.flowArrow2.style.display = showLong ? '' : 'none';
-      els.flowLong.style.display = showLong ? '' : 'none';
-
-      const parts = [chosen.code];
-      if (showTherapy) parts.push('90833');
-      if (showLong) parts.push('G2211');
-      els.flowTotal.textContent = parts.length > 1 ? '→ ' + parts.join(' + ') : '';
-
-      // Badge / reason
-      if (chosen.basis === 'time') {
-        els.badge.className = 'badge good';
-        els.badge.textContent = chosen.timeLabel;
-        els.reasonText.textContent = 'Time-based selection. Document medically appropriate detail, then copy into EHR.';
-      } else if (signals.mdm === 'moderate') {
-        els.badge.className = 'badge good';
-        els.badge.textContent = 'MDM: moderate';
-        els.reasonText.textContent = signals.justification;
-      } else if (signals.mdm === 'low') {
-        els.badge.className = 'badge warn';
-        els.badge.textContent = 'MDM: low';
-        els.reasonText.textContent = signals.justification;
-      } else {
-        els.badge.className = 'badge bad';
-        els.badge.textContent = 'MDM: minimal';
-        els.reasonText.textContent = signals.justification + ' Add clinically true documentation for problems, data, and risk.';
-      }
-
-      els.notePreview.textContent = buildNote(signals, chosen);
-    }
-
-    /* ── Utilities ── */
-    function toast(msg) {
-      els.toast.textContent = msg;
-      els.toast.classList.add('show');
-      setTimeout(() => els.toast.classList.remove('show'), 1800);
-    }
-
-    function copyNote() {
-      navigator.clipboard.writeText(els.notePreview.textContent).then(() => {
-        toast('Note copied to clipboard.');
-      }).catch(() => {
-        toast('Copy failed — browser may block clipboard.');
-      });
-    }
-
-    function resetAll() {
-      clearAllChecks();
-      els.timeMinutes.value = 0;
-      els.visitType.value = 'In person';
-      useTimeWhenAvailable = false;
-      els.btnToggleTime.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;opacity:0.6"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Use time when available';
-      // Deselect all template tabs
-      els.tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', false); });
-      // Clear suggested code and MDM badge
-      els.suggestedCode.textContent = '';
-      els.badge.className = 'badge';
-      els.badge.textContent = '';
-      els.reasonText.textContent = '';
-      els.notePreview.textContent = '';
-      els.previewMeta.textContent = '';
-      // Clear flow diagram
-      els.flowBase.textContent = '';
-      els.flowArrow1.style.display = 'none';
-      els.flowTherapy.style.display = 'none';
-      els.flowArrow2.style.display = 'none';
-      els.flowLong.style.display = 'none';
-      els.flowTotal.textContent = '';
-      toast('Reset complete.');
-    }
-
-    function applyTheme(theme) {
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-      els.themeLabel.textContent = theme === 'light' ? 'Dark' : 'Light';
-    }
-
-    /* ── Events ── */
-    els.tabs.forEach(btn => btn.addEventListener('click', () => setTemplate(btn.dataset.template)));
-    Object.values(checks).forEach(c => c.addEventListener('change', render));
-    els.visitType.addEventListener('change', render);
-    els.timeMinutes.addEventListener('input', render);
-    els.btnCopyPreview.addEventListener('click', copyNote);
-    els.btnReset.addEventListener('click', resetAll);
-    els.btnSuggestLow.addEventListener('click', setLowDefaults);
-    els.btnSuggestMod.addEventListener('click', setModerateDefaults);
-
-    els.btnTheme.addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme') || 'dark';
-      const next = current === 'light' ? 'dark' : 'light';
-      applyTheme(next);
-      toast(next === 'light' ? 'Light mode.' : 'Dark mode.');
-    });
 
     els.btnToggleTime.addEventListener('click', () => {
-      useTimeWhenAvailable = !useTimeWhenAvailable;
-      const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;opacity:0.6"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ';
-      els.btnToggleTime.innerHTML = icon + (useTimeWhenAvailable ? 'Time mode ON' : 'Use time when available');
-      toast(useTimeWhenAvailable ? 'Time mode enabled.' : 'Time mode disabled.');
-      render();
+      isTimeMode = !isTimeMode;
+      els.timeSection.classList.toggle('active', isTimeMode);
+      els.mdmSection.style.display = isTimeMode ? 'none' : 'block';
+      els.btnToggleTime.textContent = isTimeMode ? 'Switch to MDM Billing' : 'Switch to Time-Based Billing';
+      generateNote();
     });
 
-    /* ── Init ── */
-    const stored = localStorage.getItem('theme');
-    const preferLight = window.matchMedia?.('(prefers-color-scheme: light)').matches;
-    applyTheme(stored || (preferLight ? 'light' : 'dark'));
-    setTemplate('adhd');
+    [els.tPrep, els.tFace, els.tOrder, els.tDoc, els.p1, els.p2, els.p3, els.r1, els.r2, els.r3].forEach(input => {
+      input.addEventListener('input', generateNote);
+    });
+
+    els.btnCopy.addEventListener('click', () => {
+      navigator.clipboard.writeText(els.notePreview.textContent);
+      els.btnCopy.textContent = 'Copied!';
+      setTimeout(() => els.btnCopy.textContent = 'Copy', 2000);
+    });
+
+    els.btnTheme.addEventListener('click', () => {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+    });
+
+    generateNote(); // Init
   </script>
 </body>
 </html>

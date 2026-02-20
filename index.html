@@ -451,6 +451,9 @@
     }
     .toast.show{ opacity: 1; }
 
+    #tStatus.status-good{ color: #12b981; }
+    #tStatus.status-warn{ color: #f59e0b; }
+
     html[data-theme="light"] .badge.good{
       background: rgba(18,185,129,0.14);
       border-color: rgba(18,185,129,0.30);
@@ -1051,14 +1054,19 @@
 
       const mins = Number(els.timeMinutes.value || 0);
       const b = getBreakdown();
-      if(els.tStatus) els.tStatus.textContent = `${b.total} / ${mins}`;
+      if(els.tStatus) {
+        els.tStatus.textContent = `${b.total} / ${mins}`;
+        els.tStatus.classList.remove("status-good", "status-warn");
+      }
 
       if(els.tWarn){
         if(!timeModeOn()){
           els.tWarn.textContent = "";
         } else if(b.total === mins && mins > 0){
+          if(els.tStatus) els.tStatus.classList.add("status-good");
           els.tWarn.textContent = "Breakdown matches total time.";
         } else {
+          if(els.tStatus) els.tStatus.classList.add("status-warn");
           els.tWarn.textContent = "Breakdown does not match total time. Adjust dropdowns so it equals Total time.";
         }
       }

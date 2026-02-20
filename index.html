@@ -528,41 +528,47 @@
             </div>
           </div>
 
-          <div class="field" id="timeBreakdownBox" style="display:none;">
+          <div class="field" id="timeBreakdownBox" style="display:none; margin-top:12px;">
             <div class="label">
-              <span>Time breakdown (optional for audits)</span>
-              <span class="sub">Must total to the minutes above</span>
+              <span>Time breakdown (audit support)</span>
+              <span class="sub">Choose minutes in 5 minute steps. Must total to Total time.</span>
             </div>
 
-            <div class="row" style="margin-top:8px;">
+            <div class="row" style="margin-top:10px;">
               <div class="field">
-                <div class="label"><span>Prep / chart review</span><span class="sub">minutes</span></div>
-                <input id="tPrep" type="number" min="0" max="240" value="0" />
+                <div class="label"><span>Preparing to see the patient</span><span class="sub">minutes</span></div>
+                <select id="tPrep"></select>
+                <div class="sub">Review of prior records, tests, rating scales.</div>
               </div>
-              <div class="field">
-                <div class="label"><span>Face to face E/M counseling and evaluation</span><span class="sub">minutes</span></div>
-                <input id="tF2F" type="number" min="0" max="240" value="0" />
-              </div>
-            </div>
 
-            <div class="row">
               <div class="field">
-                <div class="label"><span>Orders / prescriptions</span><span class="sub">minutes</span></div>
-                <input id="tOrders" type="number" min="0" max="240" value="0" />
-              </div>
-              <div class="field">
-                <div class="label"><span>Documentation</span><span class="sub">minutes</span></div>
-                <input id="tDoc" type="number" min="0" max="240" value="0" />
+                <div class="label"><span>Exam and evaluation plus counseling and education</span><span class="sub">minutes</span></div>
+                <select id="tEvalCounsel"></select>
+                <div class="sub">Face to face evaluation, treatment plan, medication education, side effects.</div>
               </div>
             </div>
 
             <div class="row">
               <div class="field">
-                <div class="label"><span>Care coordination / messaging</span><span class="sub">minutes</span></div>
-                <input id="tCoord" type="number" min="0" max="240" value="0" />
+                <div class="label"><span>Ordering meds, tests, procedures</span><span class="sub">minutes</span></div>
+                <select id="tOrders"></select>
               </div>
+
               <div class="field">
-                <div class="label"><span>Breakdown status</span><span class="sub" id="tStatus">0 / 0</span></div>
+                <div class="label"><span>Documentation in the EHR</span><span class="sub">minutes</span></div>
+                <select id="tDoc"></select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <div class="label"><span>Care coordination and communication</span><span class="sub">minutes</span></div>
+                <select id="tCoord"></select>
+                <div class="sub">When not separately reported.</div>
+              </div>
+
+              <div class="field">
+                <div class="label"><span>Breakdown total</span><span class="sub" id="tStatus">0 / 0</span></div>
                 <div class="sub" id="tWarn"></div>
               </div>
             </div>
@@ -791,7 +797,7 @@
       btnToggleTime: document.getElementById("btnToggleTime"),
       timeBreakdownBox: document.getElementById("timeBreakdownBox"),
       tPrep: document.getElementById("tPrep"),
-      tF2F: document.getElementById("tF2F"),
+      tEvalCounsel: document.getElementById("tEvalCounsel"),
       tOrders: document.getElementById("tOrders"),
       tDoc: document.getElementById("tDoc"),
       tCoord: document.getElementById("tCoord"),
@@ -1005,20 +1011,38 @@
       };
     }
 
+    function fill5MinuteDropdown(sel){
+      if(!sel) return;
+      sel.innerHTML = "";
+      for(let m = 0; m <= 240; m += 5){
+        const opt = document.createElement("option");
+        opt.value = String(m);
+        opt.textContent = String(m);
+        sel.appendChild(opt);
+      }
+      sel.value = "0";
+    }
+
+    function initTimeBreakdowns(){
+      fill5MinuteDropdown(els.tPrep);
+      fill5MinuteDropdown(els.tEvalCounsel);
+      fill5MinuteDropdown(els.tOrders);
+      fill5MinuteDropdown(els.tDoc);
+      fill5MinuteDropdown(els.tCoord);
+    }
+
     function timeModeOn(){
       return useTimeWhenAvailable && !!scoreTime();
     }
 
     function getBreakdown(){
-      const nums = {
-        prep: Number(els.tPrep?.value || 0),
-        f2f: Number(els.tF2F?.value || 0),
-        orders: Number(els.tOrders?.value || 0),
-        doc: Number(els.tDoc?.value || 0),
-        coord: Number(els.tCoord?.value || 0)
-      };
-      const total = nums.prep + nums.f2f + nums.orders + nums.doc + nums.coord;
-      return { ...nums, total };
+      const prep = Number(els.tPrep?.value || 0);
+      const evalCounsel = Number(els.tEvalCounsel?.value || 0);
+      const orders = Number(els.tOrders?.value || 0);
+      const doc = Number(els.tDoc?.value || 0);
+      const coord = Number(els.tCoord?.value || 0);
+      const total = prep + evalCounsel + orders + doc + coord;
+      return { prep, evalCounsel, orders, doc, coord, total };
     }
 
     function renderBreakdownStatus(){
@@ -1032,10 +1056,10 @@
       if(els.tWarn){
         if(!timeModeOn()){
           els.tWarn.textContent = "";
-        } else if(b.total === mins){
+        } else if(b.total === mins && mins > 0){
           els.tWarn.textContent = "Breakdown matches total time.";
         } else {
-          els.tWarn.textContent = "Breakdown does not match total time. Some payers may deny if audited.";
+          els.tWarn.textContent = "Breakdown does not match total time. Adjust dropdowns so it equals Total time.";
         }
       }
     }
@@ -1108,18 +1132,20 @@
       addLine(lines, "");
 
       if(chosen.basis === "time"){
-        const b = getBreakdown();
         const mins = chosen.timeMinutes;
+        const b = getBreakdown();
 
-        addLine(lines, "MDM and coding summary: Time based selection used. Total time on date of service: " + mins + " minutes.");
+        addLine(lines, `MDM and coding summary: Time based selection used. Total time on date of service: ${mins} minutes.`);
 
-        if(b.total > 0 && b.total === mins){
-          addLine(lines, "Time breakdown (audit support):");
-          if(b.prep) addLine(lines, `- ${b.prep} min: Preparing to see the patient (review of prior records/tests/rating scales).`);
-          if(b.f2f) addLine(lines, `- ${b.f2f} min: Medically appropriate evaluation and face-to-face counseling/education (medication options, risks/benefits, side effects, safety planning as applicable).`);
-          if(b.orders) addLine(lines, `- ${b.orders} min: Ordering medications/tests and related coordination.`);
-          if(b.doc) addLine(lines, `- ${b.doc} min: Documenting clinical information in the health record.`);
-          if(b.coord) addLine(lines, `- ${b.coord} min: Care coordination and communication (when not separately reported).`);
+        if(b.total === mins && mins > 0){
+          addLine(lines, "");
+          addLine(lines, "This level of service is based on total time spent by the provider on the calendar day of the encounter.");
+          addLine(lines, "");
+          if(b.prep) addLine(lines, `* ${b.prep} minutes: Preparing to see the patient, including review of prior records and tests.`);
+          if(b.evalCounsel) addLine(lines, `* ${b.evalCounsel} minutes: Performing a medically appropriate examination/evaluation and providing face-to-face counseling and educating the patient/caregiver regarding the treatment plan and medication side effects.`);
+          if(b.orders) addLine(lines, `* ${b.orders} minutes: Ordering medications, tests, or procedures.`);
+          if(b.doc) addLine(lines, `* ${b.doc} minutes: Documenting clinical information in the electronic health record.`);
+          if(b.coord) addLine(lines, `* ${b.coord} minutes: Care coordination and communication with other health care professionals (when not separately reported).`);
         }
       } else {
         addLine(lines, "MDM and coding summary: " + signals.justification);
@@ -1229,9 +1255,9 @@
     probWorsening.addEventListener("change", render);
     els.visitType.addEventListener("change", render);
     els.timeMinutes.addEventListener("input", render);
-    ["tPrep","tF2F","tOrders","tDoc","tCoord"].forEach(id => {
+    ["tPrep","tEvalCounsel","tOrders","tDoc","tCoord"].forEach(id => {
       const el = document.getElementById(id);
-      if(el) el.addEventListener("input", render);
+      if(el) el.addEventListener("change", render);
     });
 
     els.btnCopyPreview.addEventListener("click", copyNote);
@@ -1251,6 +1277,8 @@
       toast(useTimeWhenAvailable ? "Time mode enabled." : "Time mode disabled.");
       render();
     });
+
+    initTimeBreakdowns();
 
     const storedTheme = localStorage.getItem("theme");
     const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;

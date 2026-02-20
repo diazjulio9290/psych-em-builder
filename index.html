@@ -1,249 +1,474 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="robots" content="noindex, nofollow" />
-  <title>Psych E&M Note Builder - Time Itemized</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <title>Psych E&M Note Builder - Merged Engine</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0c1017; --surface: rgba(255,255,255,0.04); --surface2: rgba(255,255,255,0.065);
       --surface3: rgba(255,255,255,0.09); --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.12);
       --text: #e8eaf0; --text2: rgba(255,255,255,0.68); --text3: rgba(255,255,255,0.45);
       --blue: #5b8def; --blue-glow: rgba(91,141,239,0.15); --violet: #a78bfa;
-      --violet-glow: rgba(167,139,250,0.12); --green: #34d399; --green-dim: rgba(52,211,153,0.14);
+      --green: #34d399; --green-dim: rgba(52,211,153,0.14);
       --amber: #fbbf24; --amber-dim: rgba(251,191,36,0.12); --red: #f87171; --red-dim: rgba(248,113,113,0.12);
-      --code-bg: rgba(0,0,0,0.35); --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.25);
-      --r: 14px; --r2: 10px; --font: 'DM Sans', system-ui, sans-serif; --mono: 'JetBrains Mono', monospace;
+      --code-bg: rgba(0,0,0,0.35); --shadow: 0 4px 12px rgba(0,0,0,0.2);
+      --r: 12px; --r2: 8px; --font: 'DM Sans', sans-serif; --mono: 'JetBrains Mono', monospace;
     }
     html[data-theme="light"] {
-      --bg: #f4f5f7; --surface: rgba(255,255,255,0.85); --surface2: rgba(255,255,255,0.95);
-      --surface3: #ffffff; --border: rgba(0,0,0,0.07); --border2: rgba(0,0,0,0.11);
-      --text: #1a1d25; --text2: rgba(26,29,37,0.58); --text3: rgba(26,29,37,0.38);
-      --blue: #3b6fd8; --blue-glow: rgba(59,111,216,0.08); --violet: #7c5cc4;
-      --green: #16a368; --green-dim: rgba(22,163,104,0.10); --amber: #d97706; --amber-dim: rgba(217,119,6,0.08);
-      --red: #dc2626; --red-dim: rgba(220,38,38,0.07); --code-bg: #f0f2f5;
+      --bg: #f4f5f7; --surface: #ffffff; --surface2: #f8f9fa; --surface3: #e9ecef;
+      --border: rgba(0,0,0,0.1); --border2: rgba(0,0,0,0.15);
+      --text: #1a1d25; --text2: rgba(26,29,37,0.68); --text3: rgba(26,29,37,0.45);
+      --blue: #3b6fd8; --blue-glow: rgba(59,111,216,0.1); --violet: #7c5cc4;
+      --green: #16a368; --green-dim: rgba(22,163,104,0.15); --amber: #d97706; --amber-dim: rgba(217,119,6,0.15);
+      --red: #dc2626; --red-dim: rgba(220,38,38,0.15); --code-bg: #f1f3f5;
     }
     * { box-sizing: border-box; margin: 0; }
-    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
-    .shell { max-width: 1200px; margin: 0 auto; padding: 20px 16px 48px; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; padding: 20px; }
+    .shell { max-width: 1200px; margin: 0 auto; }
     
-    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r); }
-    .brand-title { font-size: 15px; font-weight: 600; }
-    .brand-sub { font-size: 12px; color: var(--text2); }
-    .btn { padding: 8px 12px; border-radius: var(--r2); border: 1px solid var(--border2); background: var(--surface2); color: var(--text); font-size: 12.5px; cursor: pointer; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; background: var(--surface); padding: 12px 20px; border-radius: var(--r); border: 1px solid var(--border); margin-bottom: 20px; }
+    .btn { padding: 8px 12px; border-radius: var(--r2); border: 1px solid var(--border2); background: var(--surface2); color: var(--text); font-family: var(--font); font-size: 13px; cursor: pointer; }
     .btn:hover { background: var(--surface3); }
-    .btn-primary { background: linear-gradient(135deg, var(--blue), var(--violet)); color: #fff; border: none; }
+    .btn-primary { background: var(--blue); color: #fff; border: none; }
+    .btn-primary:hover { background: #4a7bd9; }
+
+    .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
     
-    .grid { margin-top: 16px; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 14px; align-items: start; }
-    @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
-    
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
-    .card-head { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;}
-    .card-head h2 { font-size: 14px; font-weight: 600; }
-    .card-body { padding: 14px 16px 18px; }
-    
-    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-    .field { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; border-radius: var(--r2); background: var(--surface2); border: 1px solid var(--border); }
-    .field-label { font-size: 11px; color: var(--text2); font-weight: 500; text-transform: uppercase; }
-    select, input[type="number"] { width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border2); background: var(--code-bg); color: var(--text); font-size: 13px; }
-    
-    /* Time Breakdown Section */
-    .time-breakdown { display: none; background: var(--blue-glow); border: 1px solid var(--blue); padding: 12px; border-radius: var(--r2); margin-bottom: 14px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .tab { padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--text2); cursor: pointer; font-size: 13px; }
+    .tab.active { background: var(--blue-glow); border-color: var(--blue); color: var(--text); }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    label { font-size: 12px; color: var(--text2); display: block; margin-bottom: 4px; }
+    select, input[type="number"] { width: 100%; padding: 8px; border-radius: var(--r2); border: 1px solid var(--border2); background: var(--code-bg); color: var(--text); }
+
+    /* Time Breakdown UI */
+    .time-breakdown { display: none; background: var(--blue-glow); border: 1px solid var(--blue); padding: 12px; border-radius: var(--r2); margin-bottom: 16px; }
     .time-breakdown.active { display: block; }
     .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
     .time-item { display: flex; align-items: center; justify-content: space-between; font-size: 12px; }
-    .time-item input { width: 60px; padding: 4px 8px; text-align: right;}
+    .time-item input { width: 60px; text-align: right; }
     .total-time-display { margin-top: 10px; font-weight: bold; font-size: 14px; text-align: right; color: var(--blue); }
 
-    .groups { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .group { padding: 12px; border-radius: var(--r2); background: var(--surface2); border: 1px solid var(--border); }
-    .group h3 { font-size: 11.5px; font-weight: 600; text-transform: uppercase; color: var(--text2); margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
-    .check { display: flex; gap: 9px; padding: 4px 0; cursor: pointer; }
-    .check input { width: 16px; height: 16px; accent-color: var(--blue); }
-    .check-text { font-size: 13px; }
+    .group { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r2); padding: 12px; margin-bottom: 12px; }
+    .group h3 { font-size: 12px; text-transform: uppercase; color: var(--text2); margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+    .check { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; cursor: pointer; font-size: 13px; }
+    .check input { margin-top: 3px; accent-color: var(--blue); }
 
-    .score-card { padding: 14px; border-radius: var(--r2); background: var(--surface2); border: 1px solid var(--border); margin-bottom: 14px; }
-    .score-code { font-size: 26px; font-weight: 700; font-family: var(--mono); color: var(--blue); }
+    .score-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r2); padding: 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .score-code { font-size: 32px; font-weight: 700; font-family: var(--mono); color: var(--blue); }
+    .badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+    .badge.good { background: var(--green-dim); color: var(--green); }
+    .badge.warn { background: var(--amber-dim); color: var(--amber); }
+    .badge.bad { background: var(--red-dim); color: var(--red); }
+
+    .note-box { background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--r2); overflow: hidden; }
+    .note-head { background: var(--surface2); padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; border-bottom: 1px solid var(--border); }
+    pre { padding: 16px; white-space: pre-wrap; font-family: var(--mono); font-size: 13px; line-height: 1.5; color: var(--text); }
     
-    .note-box { border-radius: var(--r2); border: 1px solid var(--border); background: var(--code-bg); }
-    .note-head { padding: 8px 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 11px; background: var(--surface); }
-    pre { padding: 12px; white-space: pre-wrap; font-family: var(--mono); font-size: 12px; line-height: 1.5; color: var(--text); }
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--surface3); padding: 10px 20px; border-radius: 20px; font-size: 13px; opacity: 0; transition: opacity 0.3s; pointer-events: none; border: 1px solid var(--border2); }
+    .toast.show { opacity: 1; }
   </style>
 </head>
 <body>
-  <div class="shell">
-    <header class="topbar">
-      <div>
-        <div class="brand-title">Psych E&amp;M Note Builder</div>
-        <div class="brand-sub">Itemized Time &amp; MDM Billing Automation</div>
-      </div>
-      <div>
-        <button class="btn" id="btnTheme">Toggle Theme</button>
-      </div>
-    </header>
 
-    <div class="grid">
-      <div class="card">
-        <div class="card-head">
-          <h2>Encounter Details</h2>
-          <button class="btn btn-primary" id="btnToggleTime">Switch to Time-Based Billing</button>
+<div class="shell">
+  <header class="topbar">
+    <div>
+      <strong style="font-size: 16px;">Psych E&M Note Builder</strong>
+      <div style="font-size: 12px; color: var(--text2);">Integrated MDM & Itemized Time Tracker</div>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button class="btn" id="btnTheme">Toggle Theme</button>
+      <button class="btn" id="btnClearPatient">Clear Patient</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <div class="tabs">
+        <button class="tab" data-template="adhd">ADHD</button>
+        <button class="tab" data-template="anxiety">Anxiety</button>
+        <button class="tab" data-template="depression">Depression</button>
+        <button class="tab" data-template="combo">Anxiety + ADHD</button>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Visit Type</label>
+          <select id="visitType">
+            <option value="In person">In person</option>
+            <option value="Telehealth - video">Telehealth - video</option>
+            <option value="Telehealth - phone">Telehealth - phone</option>
+          </select>
         </div>
-        <div class="card-body">
-          
-          <div class="time-breakdown" id="timeSection">
-            <h3 style="font-size: 13px; margin-bottom: 4px;">Itemized Time Breakdown (Minutes)</h3>
-            <p style="font-size: 11px; color: var(--text2);">Enter exact minutes spent on the calendar day to generate an audit-proof note.</p>
-            <div class="time-grid">
-              <div class="time-item"><span>Chart Review / Prep:</span> <input type="number" id="tPrep" min="0" value="0"></div>
-              <div class="time-item"><span>Face-to-Face / Counseling:</span> <input type="number" id="tFace" min="0" value="0"></div>
-              <div class="time-item"><span>Ordering Meds / Tests:</span> <input type="number" id="tOrder" min="0" value="0"></div>
-              <div class="time-item"><span>Charting / Coordination:</span> <input type="number" id="tDoc" min="0" value="0"></div>
-            </div>
-            <div class="total-time-display">Total: <span id="totalTimeNum">0</span> mins</div>
-          </div>
-
-          <div id="mdmSection">
-            <p style="font-size: 12px; color: var(--text2); margin-bottom: 10px;">Select elements to calculate MDM severity.</p>
-            <div class="groups">
-              <div class="group">
-                <h3>Problems Addressed</h3>
-                <label class="check"><input type="checkbox" id="p1"><span class="check-text">1 stable condition</span></label>
-                <label class="check"><input type="checkbox" id="p2"><span class="check-text">2+ stable conditions</span></label>
-                <label class="check"><input type="checkbox" id="p3"><span class="check-text">1 condition worsening</span></label>
-              </div>
-              <div class="group">
-                <h3>Risk & Management</h3>
-                <label class="check"><input type="checkbox" id="r1"><span class="check-text">Rx drug management</span></label>
-                <label class="check"><input type="checkbox" id="r2"><span class="check-text">Safety risk assessed</span></label>
-                <label class="check"><input type="checkbox" id="r3"><span class="check-text">Side effects reviewed</span></label>
-              </div>
-            </div>
-          </div>
-          
+        <div style="display: flex; align-items: flex-end;">
+          <button class="btn btn-primary" id="btnToggleTime" style="width: 100%;">Use time when available</button>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-head"><h2>Suggested Code &amp; Documentation</h2></div>
-        <div class="card-body">
-          <div class="score-card">
-            <div style="font-size: 11px; text-transform: uppercase; color: var(--text2);">Suggested Code</div>
-            <div class="score-code" id="suggestedCode">99212</div>
-            <div id="codeReason" style="font-size: 12px; margin-top: 6px; color: var(--text2);"></div>
+      <div class="time-breakdown" id="timeSection">
+        <h3 style="font-size: 13px; margin-bottom: 4px;">Itemized Time Breakdown (Minutes)</h3>
+        <p style="font-size: 11px; color: var(--text2);">Audit-proof minute tracking for calendar day of encounter.</p>
+        <div class="time-grid">
+          <div class="time-item"><span>Chart Review / Prep:</span> <input type="number" id="tPrep" min="0" value="0"></div>
+          <div class="time-item"><span>Face-to-Face / Counseling:</span> <input type="number" id="tFace" min="0" value="0"></div>
+          <div class="time-item"><span>Ordering Meds / Tests:</span> <input type="number" id="tOrder" min="0" value="0"></div>
+          <div class="time-item"><span>Charting / Coordination:</span> <input type="number" id="tDoc" min="0" value="0"></div>
+        </div>
+        <div class="total-time-display">Total: <span id="totalTimeNum">0</span> mins</div>
+      </div>
+
+      <div id="mdmSection">
+        <div class="group">
+          <h3>Problems Addressed</h3>
+          <div id="problemSummary" style="font-size: 11px; color: var(--text2); margin-bottom: 8px;">No conditions selected.</div>
+          <div style="display: flex; gap: 12px; margin-bottom: 8px;">
+            <label class="check"><input type="checkbox" class="cond" value="ADHD"> ADHD</label>
+            <label class="check"><input type="checkbox" class="cond" value="Anxiety"> Anxiety</label>
+            <label class="check"><input type="checkbox" class="cond" value="Depression"> Depression</label>
           </div>
-          <div class="note-box">
-            <div class="note-head"><span>Documentation Snippet</span> <button class="btn" id="btnCopy" style="padding: 2px 8px;">Copy</button></div>
-            <pre id="notePreview"></pre>
-          </div>
+          <label class="check"><input type="checkbox" id="probWorsening"> <strong>One or more conditions worsening / not at goal</strong></label>
+        </div>
+
+        <div class="group">
+          <h3>Data Reviewed</h3>
+          <label class="check"><input type="checkbox" id="d1"> Rating scales reviewed</label>
+          <label class="check"><input type="checkbox" id="d2"> Collateral from independent historian</label>
+          <label class="check"><input type="checkbox" id="d3"> Outside records reviewed</label>
+          <label class="check"><input type="checkbox" id="d4"> Labs reviewed / ordered</label>
+        </div>
+
+        <div class="group">
+          <h3>Risk & Management</h3>
+          <label class="check"><input type="checkbox" id="r1"> Prescription drug management</label>
+          <label class="check"><input type="checkbox" id="r2"> Safety risk assessed</label>
+          <label class="check"><input type="checkbox" id="r3"> Side effects reviewed</label>
+          <label class="check"><input type="checkbox" id="r4"> Controlled substance monitoring</label>
+        </div>
+
+        <div class="group">
+          <h3>Exam & Plan</h3>
+          <label class="check"><input type="checkbox" id="m1"> MSE documented</label>
+          <label class="check"><input type="checkbox" id="m2"> Functional status addressed</label>
+          <label class="check"><input type="checkbox" id="m3"> Substance use screening</label>
+          <label class="check"><input type="checkbox" id="m4"> Follow-up interval in plan</label>
+        </div>
+        
+        <div style="display: flex; gap: 8px; margin-top: 10px;">
+          <button class="btn" id="btnSuggestLow">Auto: Low MDM</button>
+          <button class="btn" id="btnSuggestMod">Auto: Mod MDM</button>
         </div>
       </div>
     </div>
-  </div>
 
-  <script>
+    <div>
+      <div class="score-card">
+        <div>
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--text2); margin-bottom: 4px;">Suggested Code</div>
+          <div class="score-code" id="suggestedCode">99213</div>
+        </div>
+        <div style="text-align: right;">
+          <div class="badge good" id="badge">MDM: Low</div>
+        </div>
+      </div>
+      <div id="reasonText" style="font-size: 13px; color: var(--text2); margin-bottom: 16px; line-height: 1.4;"></div>
+
+      <div class="note-box">
+        <div class="note-head">
+          <span id="previewMeta">Template: None</span>
+          <button class="btn btn-primary" id="btnCopyPreview" style="padding: 4px 12px;">Copy Note</button>
+        </div>
+        <pre id="notePreview"></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Message</div>
+
+<script>
     const els = {
-      btnToggleTime: document.getElementById('btnToggleTime'),
-      timeSection: document.getElementById('timeSection'),
-      mdmSection: document.getElementById('mdmSection'),
-      tPrep: document.getElementById('tPrep'), tFace: document.getElementById('tFace'),
-      tOrder: document.getElementById('tOrder'), tDoc: document.getElementById('tDoc'),
-      totalTimeNum: document.getElementById('totalTimeNum'),
-      p1: document.getElementById('p1'), p2: document.getElementById('p2'), p3: document.getElementById('p3'),
-      r1: document.getElementById('r1'), r2: document.getElementById('r2'), r3: document.getElementById('r3'),
-      suggestedCode: document.getElementById('suggestedCode'),
-      codeReason: document.getElementById('codeReason'),
-      notePreview: document.getElementById('notePreview'),
-      btnCopy: document.getElementById('btnCopy'),
-      btnTheme: document.getElementById('btnTheme')
+      tabs: Array.from(document.querySelectorAll(".tab")),
+      visitType: document.getElementById("visitType"),
+      
+      // Time elements
+      timeSection: document.getElementById("timeSection"),
+      mdmSection: document.getElementById("mdmSection"),
+      tPrep: document.getElementById("tPrep"),
+      tFace: document.getElementById("tFace"),
+      tOrder: document.getElementById("tOrder"),
+      tDoc: document.getElementById("tDoc"),
+      totalTimeNum: document.getElementById("totalTimeNum"),
+      
+      suggestedCode: document.getElementById("suggestedCode"),
+      badge: document.getElementById("badge"),
+      reasonText: document.getElementById("reasonText"),
+      notePreview: document.getElementById("notePreview"),
+      previewMeta: document.getElementById("previewMeta"),
+      
+      btnCopyPreview: document.getElementById("btnCopyPreview"),
+      btnTheme: document.getElementById("btnTheme"),
+      btnClearPatient: document.getElementById("btnClearPatient"),
+      btnSuggestLow: document.getElementById("btnSuggestLow"),
+      btnSuggestMod: document.getElementById("btnSuggestMod"),
+      btnToggleTime: document.getElementById("btnToggleTime"),
+      toast: document.getElementById("toast")
     };
 
+    const checks = ["d1","d2","d3","d4","r1","r2","r3","r4","m1","m2","m3","m4"].reduce((acc,id)=>{
+      acc[id] = document.getElementById(id); return acc;
+    }, {});
+
+    const conditionChecks = Array.from(document.querySelectorAll(".cond"));
+    const probWorsening = document.getElementById("probWorsening");
+    const problemSummary = document.getElementById("problemSummary");
+
+    let currentTemplate = "adhd";
     let isTimeMode = false;
 
-    // Time calculations based on PDF brackets
-    function calculateTimeCode(total) {
-      if (total >= 55) return { code: '99215 + 99417', text: '55+ mins requires prolonged service add-on.' };
-      if (total >= 40) return { code: '99215', text: '40-54 minutes maps to 99215.' };
-      if (total >= 30) return { code: '99214', text: '30-39 minutes maps to 99214.' };
-      if (total >= 20) return { code: '99213', text: '20-29 minutes maps to 99213.' };
-      if (total >= 10) return { code: '99212', text: '10-19 minutes maps to 99212.' };
-      return { code: 'N/A', text: 'Less than 10 minutes cannot be billed using time.' };
+    const templates = {
+      adhd: { name: "ADHD follow up", defaults: ["r3","m1","m2","m4"], dx: ["ADHD"], symptomLine: "Attention and executive function symptoms reviewed. Functioning in school and home discussed." },
+      anxiety: { name: "Anxiety follow up", defaults: ["r3","m1","m2","m4"], dx: ["Anxiety"], symptomLine: "Anxiety severity and triggers reviewed. Sleep and somatic symptoms discussed." },
+      depression: { name: "Depression follow up", defaults: ["r3","m1","m2","m4"], dx: ["Depression"], symptomLine: "Mood, anhedonia, energy, appetite and sleep reviewed. Safety screening completed." },
+      combo: { name: "Anxiety plus ADHD", defaults: ["d1","r1","r3","m1","m2","m4"], dx: ["ADHD","Anxiety"], symptomLine: "Combined symptom review completed. Attention, anxiety, sleep, and functional impact discussed." }
+    };
+
+    function setConditions(values){
+      conditionChecks.forEach(c => c.checked = values.includes(c.value));
+      if(probWorsening) probWorsening.checked = false;
     }
 
-    // MDM calculations based on PDF 2-of-3 rules
-    function calculateMDMCode() {
-      let prob = 1; // minimal
-      if (els.p2.checked || els.p3.checked) prob = 3; // moderate
-      else if (els.p1.checked) prob = 2; // low
+    function setTemplate(key){
+      currentTemplate = key;
+      els.tabs.forEach(t=>{
+        const active = t.dataset.template === key;
+        t.classList.toggle("active", active);
+      });
+      clearAllChecks();
+      setConditions(templates[key].dx);
+      templates[key].defaults.forEach(id => { checks[id].checked = true; });
+      els.previewMeta.textContent = "Template: " + templates[key].name;
+      render();
+    }
 
-      let risk = 1; // minimal
-      if (els.r1.checked || els.r2.checked) risk = 3; // moderate
-      else if (els.r3.checked) risk = 2; // low
+    function clearAllChecks(){
+      Object.values(checks).forEach(c => c.checked = false);
+      conditionChecks.forEach(c => c.checked = false);
+      if(probWorsening) probWorsening.checked = false;
+    }
 
-      // Simplified 2-of-3 assuming Data is minimal for this demo
-      let mdmLevel = Math.max(Math.min(prob, risk), 1); 
+    function setLowDefaults(){
+      clearAllChecks();
+      setConditions(["ADHD"]);
+      ["m1","m2","m4"].forEach(id => checks[id].checked = true);
+      render(); toast("Low complexity set applied.");
+    }
+
+    function setModerateDefaults(){
+      clearAllChecks();
+      setConditions(["ADHD","Anxiety"]);
+      ["d1","r1","r2","r3","m1","m2","m4"].forEach(id => checks[id].checked = true);
+      render(); toast("Moderate complexity set applied.");
+    }
+
+    // -- MDM Scoring Logic --
+    function levelRank(lvl){ return ({ minimal: 0, low: 1, moderate: 2, high: 3 })[lvl] ?? 0; }
+
+    function scoreProblems(){
+      const count = conditionChecks.filter(c => c.checked).length;
+      const worsening = probWorsening.checked;
+      const selected = conditionChecks.filter(c => c.checked).map(c => c.value);
       
-      if (prob === 3 && risk === 3) return { code: '99214', text: 'MDM: Moderate (Moderate Problems + Moderate Risk)' };
-      if (prob >= 2 && risk >= 2) return { code: '99213', text: 'MDM: Low (Low Problems + Low Risk)' };
-      return { code: '99212', text: 'MDM: Straightforward' };
+      if(selected.length) problemSummary.textContent = "Selected: " + selected.join(", ") + (worsening ? " | Worsening: yes" : " | Worsening: no");
+      else problemSummary.textContent = "No conditions selected.";
+
+      if(worsening) return "moderate";
+      if(count >= 2) return "moderate";
+      if(count === 1) return "low";
+      return "minimal";
     }
 
-    function generateNote() {
-      if (isTimeMode) {
+    function scoreData(){
+      const testsOrRecords = ["d3","d4"].filter(id => checks[id].checked).length;
+      const ratingScales = checks.d1.checked;
+      const independentHistorian = checks.d2.checked;
+
+      if(independentHistorian) return "moderate";
+      if((ratingScales && testsOrRecords >= 1) || testsOrRecords >= 2) return "moderate";
+      if(testsOrRecords >= 1) return "low";
+      return "minimal";
+    }
+
+    function scoreRisk(){
+      if(checks.r1.checked || checks.r2.checked || checks.r4.checked) return "moderate";
+      if(checks.r3.checked) return "low";
+      return "minimal";
+    }
+
+    function scoreMDM(){
+      const problems = scoreProblems(), data = scoreData(), risk = scoreRisk();
+      const levels = [problems, data, risk];
+      const countAtLeast = (lvl) => levels.filter(x => levelRank(x) >= levelRank(lvl)).length;
+      
+      let mdm = "minimal";
+      if(countAtLeast("high") >= 2) mdm = "high";
+      else if(countAtLeast("moderate") >= 2) mdm = "moderate";
+      else if(countAtLeast("low") >= 2) mdm = "low";
+
+      const problemJust = problems === "moderate" ? "Problems: Mod (2+ stable or 1 worsening)." : problems === "low" ? "Problems: Low (1 stable)." : "Problems: Minimal.";
+      const riskJust = risk === "moderate" ? "Risk: Mod (Rx mgmt/safety)." : risk === "low" ? "Risk: Low (side effects)." : "Risk: Minimal.";
+      
+      return { problems, data, risk, mdm, justification: `${problemJust} Data: ${data}. ${riskJust}` };
+    }
+
+    // -- Time Scoring Logic --
+    function scoreTime(totalMins) {
+      if (totalMins >= 55) return { code: '99215 + 99417', label: 'Time 55+ mins' };
+      if (totalMins >= 40) return { code: '99215', label: 'Time 40-54 mins' };
+      if (totalMins >= 30) return { code: '99214', label: 'Time 30-39 mins' };
+      if (totalMins >= 20) return { code: '99213', label: 'Time 20-29 mins' };
+      if (totalMins >= 10) return { code: '99212', label: 'Time 10-19 mins' };
+      return { code: 'N/A', label: 'Time < 10 mins' };
+    }
+
+    // -- Note Builder --
+    function addLine(lines, text){ if((text || "").trim()) lines.push(text.trim()); }
+    function joinSentences(arr){ return arr.filter(Boolean).join(" "); }
+
+    function buildNote(signals, timeInfo){
+      const t = currentTemplate ? templates[currentTemplate] : { dx: [], symptomLine: "No template selected." };
+      const lines = [];
+      
+      addLine(lines, "PSYCHIATRY E&M MEDICATION MANAGEMENT NOTE (Established Patient)");
+      addLine(lines, "Visit type: " + els.visitType.value);
+      const activeDx = conditionChecks.filter(c => c.checked).map(c => c.value);
+      addLine(lines, "Diagnoses: " + (activeDx.length ? activeDx.join(", ") : t.dx.join(", ")));
+      addLine(lines, "");
+      addLine(lines, "Interval history: " + t.symptomLine);
+      addLine(lines, "");
+
+      if(checks.r2.checked) addLine(lines, "Safety: Suicide and harm risk assessment completed. Safety plan reviewed.");
+      if(checks.m1.checked) addLine(lines, "MSE: Appearance/behavior appropriate. Speech normal. Thought process linear. Insight/judgment fair.");
+      if(checks.m2.checked) addLine(lines, "Function: School, home routine, and sleep reviewed. Functional impact discussed.");
+      if(checks.m3.checked) addLine(lines, "Substance: Screening documented as age appropriate.");
+
+      const dataSentences = [];
+      if(checks.d1.checked) dataSentences.push("Rating scales reviewed.");
+      if(checks.d2.checked) dataSentences.push("Collateral obtained from independent historian.");
+      if(checks.d3.checked) dataSentences.push("Outside records reviewed.");
+      if(checks.d4.checked) dataSentences.push("Labs reviewed/ordered.");
+      if(dataSentences.length) addLine(lines, "Data: " + joinSentences(dataSentences));
+
+      if(checks.r1.checked) addLine(lines, "Medications: Prescription drug management performed today. Risks/benefits/monitoring reviewed.");
+      else if(checks.r3.checked) addLine(lines, "Medications: Current regimen reviewed. Side effects discussed.");
+
+      if(checks.r4.checked) addLine(lines, "Controlled substances: PDMP and safe storage policies discussed.");
+
+      const planSentences = ["Plan: Continue treatment plan with shared decision making."];
+      if(checks.m4.checked) planSentences.push("Follow up interval set.");
+      addLine(lines, "");
+      addLine(lines, joinSentences(planSentences));
+      addLine(lines, "");
+
+      // Append MDM or Itemized Time
+      if(isTimeMode){
+        addLine(lines, `Time-Based Billing Breakdown (Total: ${timeInfo.total} minutes)`);
+        addLine(lines, `This level of service is based on total provider time on the calendar day of the encounter.`);
+        if(timeInfo.prep > 0) addLine(lines, `* ${timeInfo.prep} mins: Preparing to see patient/chart review.`);
+        if(timeInfo.face > 0) addLine(lines, `* ${timeInfo.face} mins: Examination and face-to-face counseling regarding treatment.`);
+        if(timeInfo.order > 0) addLine(lines, `* ${timeInfo.order} mins: Ordering medications/tests.`);
+        if(timeInfo.doc > 0) addLine(lines, `* ${timeInfo.doc} mins: Documenting clinical info and care coordination.`);
+      } else {
+        addLine(lines, "MDM and coding summary: " + signals.justification);
+      }
+
+      return lines.join("\n");
+    }
+
+    function render(){
+      const signals = scoreMDM();
+      
+      let totalMins = 0;
+      let timeInfo = null;
+
+      if(isTimeMode) {
         const prep = parseInt(els.tPrep.value) || 0;
         const face = parseInt(els.tFace.value) || 0;
         const order = parseInt(els.tOrder.value) || 0;
         const doc = parseInt(els.tDoc.value) || 0;
-        const total = prep + face + order + doc;
+        totalMins = prep + face + order + doc;
+        els.totalTimeNum.textContent = totalMins;
         
-        els.totalTimeNum.textContent = total;
-        const result = calculateTimeCode(total);
-        els.suggestedCode.textContent = result.code;
-        els.codeReason.textContent = "Based on total time: " + result.text;
-
-        let note = `Time-Based Billing Breakdown (Total Time: ${total} minutes)\nThis level of service is based on total time spent by the provider on the calendar day of the encounter.\n\n`;
-        if (prep > 0) note += `* ${prep} minutes: Preparing to see the patient, including review of prior records/tests.\n`;
-        if (face > 0) note += `* ${face} minutes: Performing examination/evaluation and providing face-to-face counseling/education regarding treatment.\n`;
-        if (order > 0) note += `* ${order} minutes: Ordering medications, tests, or procedures.\n`;
-        if (doc > 0) note += `* ${doc} minutes: Documenting clinical information and care coordination.\n`;
-        note += `\nTotal Provider Time: ${total} minutes.`;
+        const timeScore = scoreTime(totalMins);
+        timeInfo = { total: totalMins, prep, face, order, doc };
         
-        els.notePreview.textContent = note;
-
+        els.suggestedCode.textContent = timeScore.code;
+        els.badge.className = "badge good";
+        els.badge.textContent = timeScore.label;
+        els.reasonText.textContent = "Suggested by itemized total time. Ensure documentation reflects actual time spent.";
       } else {
-        const result = calculateMDMCode();
-        els.suggestedCode.textContent = result.code;
-        els.codeReason.textContent = result.text;
-        els.notePreview.textContent = "MDM Summary:\nThis level of service is based on Medical Decision Making.\n- Problems: " + (els.p2.checked || els.p3.checked ? "Moderate" : els.p1.checked ? "Low" : "Minimal") + "\n- Risk: " + (els.r1.checked || els.r2.checked ? "Moderate (Rx management/safety)" : els.r3.checked ? "Low" : "Minimal") + "\n\n(Note: If insurance audits require specific time itemizations, toggle to Time-Based Billing.)";
+        els.suggestedCode.textContent = signals.mdm === "moderate" ? "99214" : signals.mdm === "high" ? "99215" : "99213";
+        els.badge.className = signals.mdm === "moderate" ? "badge good" : signals.mdm === "low" ? "badge warn" : "badge bad";
+        els.badge.textContent = "MDM: " + signals.mdm;
+        els.reasonText.textContent = signals.justification;
       }
+
+      els.notePreview.textContent = buildNote(signals, timeInfo);
     }
 
-    els.btnToggleTime.addEventListener('click', () => {
+    // -- Utilities & Events --
+    function toast(msg){ els.toast.textContent = msg; els.toast.classList.add("show"); setTimeout(()=> els.toast.classList.remove("show"), 1800); }
+    function copyNote(){ navigator.clipboard.writeText(els.notePreview.textContent).then(()=>toast("Note copied!")).catch(()=>toast("Copy failed.")); }
+
+    function clearPatientInfo(){
+      clearAllChecks();
+      els.visitType.value = "In person";
+      els.tPrep.value = 0; els.tFace.value = 0; els.tOrder.value = 0; els.tDoc.value = 0;
+      
+      currentTemplate = null;
+      els.tabs.forEach(t => t.classList.remove("active"));
+      els.previewMeta.textContent = "Template: none";
+      
+      if(isTimeMode) els.btnToggleTime.click(); // Toggle back to MDM
+      render(); toast("Patient info cleared.");
+    }
+
+    els.tabs.forEach(btn => btn.addEventListener("click", ()=>setTemplate(btn.dataset.template)));
+    Object.values(checks).forEach(c => c.addEventListener("change", render));
+    conditionChecks.forEach(c => c.addEventListener("change", render));
+    probWorsening.addEventListener("change", render);
+    els.visitType.addEventListener("change", render);
+    [els.tPrep, els.tFace, els.tOrder, els.tDoc].forEach(i => i.addEventListener("input", render));
+
+    els.btnCopyPreview.addEventListener("click", copyNote);
+    els.btnClearPatient.addEventListener("click", clearPatientInfo);
+    els.btnSuggestLow.addEventListener("click", setLowDefaults);
+    els.btnSuggestMod.addEventListener("click", setModerateDefaults);
+
+    els.btnToggleTime.addEventListener("click", ()=>{
       isTimeMode = !isTimeMode;
-      els.timeSection.classList.toggle('active', isTimeMode);
-      els.mdmSection.style.display = isTimeMode ? 'none' : 'block';
-      els.btnToggleTime.textContent = isTimeMode ? 'Switch to MDM Billing' : 'Switch to Time-Based Billing';
-      generateNote();
+      els.timeSection.classList.toggle("active", isTimeMode);
+      els.mdmSection.style.display = isTimeMode ? "none" : "block";
+      els.btnToggleTime.textContent = isTimeMode ? "Switch to MDM Billing" : "Use time when available";
+      
+      if (isTimeMode && (els.tPrep.value === '0' && els.tFace.value === '0' && els.tDoc.value === '0')) {
+        els.tPrep.value = '5'; els.tFace.value = '30'; els.tDoc.value = '10';
+      }
+      render(); toast(isTimeMode ? "Time mode enabled." : "MDM mode enabled.");
     });
 
-    [els.tPrep, els.tFace, els.tOrder, els.tDoc, els.p1, els.p2, els.p3, els.r1, els.r2, els.r3].forEach(input => {
-      input.addEventListener('input', generateNote);
+    els.btnTheme.addEventListener("click", ()=>{
+      const isLight = document.documentElement.getAttribute("data-theme") === "light";
+      document.documentElement.setAttribute("data-theme", isLight ? "dark" : "light");
     });
 
-    els.btnCopy.addEventListener('click', () => {
-      navigator.clipboard.writeText(els.notePreview.textContent);
-      els.btnCopy.textContent = 'Copied!';
-      setTimeout(() => els.btnCopy.textContent = 'Copy', 2000);
-    });
-
-    els.btnTheme.addEventListener('click', () => {
-      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
-    });
-
-    generateNote(); // Init
-  </script>
+    setTemplate("adhd");
+</script>
 </body>
 </html>

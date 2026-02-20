@@ -488,6 +488,7 @@
           Prototype, local only
         </div>
         <button class="btn" id="btnTheme" title="Toggle light or dark theme">Light mode</button>
+        <button class="btn" id="btnToggleTime" title="Use time instead of MDM when time is entered">Time mode enabled</button>
         <button class="btn" id="btnClearPatient" title="Clear patient info">Clear patient info</button>
       </div>
     </div>
@@ -727,7 +728,6 @@
           <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px;">
             <button class="btn" id="btnSuggestLow" title="Set minimal low complexity defaults">Low complexity set</button>
             <button class="btn" id="btnSuggestMod" title="Set typical moderate complexity defaults">Moderate complexity set</button>
-            <button class="btn" id="btnToggleTime" title="Use time instead of MDM when time is entered">Use time when available</button>
           </div>
           <p class="sub" style="margin-top:10px;">
             The suggestion logic is intentionally conservative and simplified for a prototype. Final coding depends on clinician judgment and payer rules.
@@ -823,7 +823,7 @@
     const problemSummary = document.getElementById("problemSummary");
 
     let currentTemplate = "adhd";
-    let useTimeWhenAvailable = false;
+    let useTimeWhenAvailable = true;
 
     const templates = {
       adhd: {
@@ -1237,8 +1237,8 @@
       checkboxes.forEach(field => { field.checked = false; });
       els.visitType.value = "";
       els.timeMinutes.value = 0;
-      useTimeWhenAvailable = false;
-      els.btnToggleTime.textContent = "Use time when available";
+      useTimeWhenAvailable = true;
+      els.btnToggleTime.textContent = "Time mode enabled";
       clearTemplateSelection();
       render();
       toast("Patient info cleared.");
@@ -1287,6 +1287,7 @@
     });
 
     initTimeBreakdowns();
+    els.btnToggleTime.textContent = useTimeWhenAvailable ? "Time mode enabled" : "Use time when available";
 
     const storedTheme = localStorage.getItem("theme");
     const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;

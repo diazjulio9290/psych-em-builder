@@ -974,7 +974,7 @@
     function fill5MinuteDropdown(sel){
       if(!sel) return;
       sel.innerHTML = "";
-      for(let m = 0; m <= 240; m += 5){
+      for(let m = 0; m <= 30; m += 5){
         const opt = document.createElement("option");
         opt.value = String(m);
         opt.textContent = String(m);

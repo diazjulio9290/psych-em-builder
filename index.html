@@ -25,25 +25,18 @@
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
     }
     html[data-theme="light"]{
-      /* Base */
       --bg: #f6f7fb;
       --text: rgba(10, 18, 34, 0.92);
       --muted: rgba(10, 18, 34, 0.62);
       --muted2: rgba(10, 18, 34, 0.50);
-
-      /* Surfaces and borders */
       --panel: rgba(255,255,255,0.92);
       --panel2: rgba(255,255,255,0.70);
       --border: rgba(16, 24, 40, 0.14);
-
-      /* Accents */
       --accent: #2f6fec;
       --accent2: #6d5efc;
       --good: #12b981;
       --warn: #f59e0b;
       --bad:  #ef4444;
-
-      /* Shadow */
       --shadow: 0 18px 55px rgba(16, 24, 40, 0.10);
     }
     *{ box-sizing:border-box; }
@@ -64,19 +57,16 @@
         radial-gradient(700px 500px at 35% 95%, rgba(18,185,129,0.07), transparent 58%),
         var(--bg);
     }
-    /* Make top surfaces actually white in light mode */
     html[data-theme="light"] .topbar,
     html[data-theme="light"] .card{
       background: rgba(255,255,255,0.92);
       backdrop-filter: blur(8px);
       border-color: rgba(16, 24, 40, 0.12);
     }
-    /* Logo should match the lighter theme, less neon */
     html[data-theme="light"] .logo{
       background: linear-gradient(135deg, rgba(47,111,236,0.95), rgba(109,94,252,0.92));
       box-shadow: 0 12px 30px rgba(47,111,236,0.18);
     }
-    /* Buttons should have clearer edges */
     html[data-theme="light"] .btn{
       background: rgba(255,255,255,0.88);
       border-color: rgba(16, 24, 40, 0.14);
@@ -158,6 +148,7 @@
     }
     @media (max-width: 980px){
       .grid{ grid-template-columns: 1fr; }
+      .topbar,.right{ flex-wrap:wrap; }
     }
     .card{
       border: 1px solid var(--border);
@@ -171,6 +162,7 @@
       padding: 14px 16px;
       border-bottom: 1px solid var(--border);
       display:flex; align-items:center; justify-content:space-between; gap:12px;
+      flex-wrap:wrap;
     }
     html[data-theme="light"] .cardHeader{
       background: rgba(255,255,255,0.92);
@@ -181,13 +173,8 @@
       letter-spacing: 0.2px;
     }
     .sub{ margin:0; font-size: 12px; color: var(--muted); }
-    .section{
-      padding: 14px 16px 16px;
-    }
-
-    .tabs{
-      display:flex; gap:8px; flex-wrap:wrap;
-    }
+    .section{ padding: 14px 16px 16px; }
+    .tabs{ display:flex; gap:8px; flex-wrap:wrap; }
     .tab{
       padding: 10px 12px;
       border-radius: 999px;
@@ -212,7 +199,6 @@
     @media (max-width: 780px){
       .condGrid{ grid-template-columns: 1fr; }
     }
-    /* Tabs: stronger neutral background so they are visible */
     html[data-theme="light"] .tab{
       background: rgba(16, 24, 40, 0.04);
       border-color: rgba(16, 24, 40, 0.14);
@@ -222,23 +208,14 @@
       background: rgba(47,111,236,0.08);
       border-color: rgba(47,111,236,0.22);
     }
-    /* Active tab: solid fill + subtle shadow */
     html[data-theme="light"] .tab.active{
       background: rgba(47,111,236,0.14);
       border-color: rgba(47,111,236,0.35);
       color: rgba(10,18,34,0.92);
       box-shadow: 0 10px 24px rgba(47,111,236,0.10);
     }
-
-    .row{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 14px;
-    }
-    @media (max-width: 780px){
-      .row{ grid-template-columns: 1fr; }
-    }
+    .row{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+    @media (max-width: 780px){ .row{ grid-template-columns: 1fr; } }
     .field{
       display:flex; flex-direction:column; gap:8px;
       padding: 12px;
@@ -246,7 +223,6 @@
       background: rgba(255,255,255,0.05);
       border: 1px solid var(--border);
     }
-    /* Section fields and groups should read as cards */
     html[data-theme="light"] .field,
     html[data-theme="light"] .group,
     html[data-theme="light"] .scoreCard{
@@ -259,7 +235,7 @@
       display:flex; align-items:center; justify-content:space-between;
       gap: 10px;
     }
-    select, input[type="number"]{
+    select, input[type="number"], textarea, input[type="text"]{
       width:100%;
       padding: 10px 10px;
       border-radius: 12px;
@@ -267,49 +243,34 @@
       background: rgba(0,0,0,0.20);
       color: var(--text);
       outline:none;
+      font-family: var(--sans);
     }
+    textarea{ min-height: 74px; resize: vertical; }
     input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button{
-      -webkit-appearance: none; margin: 0;
-    }
-
-    .groups{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
-    @media (max-width: 780px){
-      .groups{ grid-template-columns: 1fr; }
-    }
+    input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
+    .groups{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+    @media (max-width: 780px){ .groups{ grid-template-columns: 1fr; } }
     .group{
       padding: 12px;
       border-radius: var(--radius2);
       background: rgba(255,255,255,0.04);
       border: 1px solid var(--border);
     }
-    /* Inputs: in light mode, dark inputs look odd. Make them white. */
     html[data-theme="light"] select,
-    html[data-theme="light"] input[type="number"]{
+    html[data-theme="light"] input[type="number"],
+    html[data-theme="light"] textarea,
+    html[data-theme="light"] input[type="text"]{
       background: rgba(255,255,255,0.98);
       border-color: rgba(16,24,40,0.16);
       color: rgba(10,18,34,0.92);
     }
     .group h3{ margin:0 0 8px 0; font-size: 13px; }
-    .check{
-      display:flex; align-items:flex-start; gap:10px;
-      padding: 8px 8px;
-      border-radius: 12px;
-      transition: background 0.15s ease;
-    }
+    .check{ display:flex; align-items:flex-start; gap:10px; padding: 8px 8px; border-radius: 12px; transition: background 0.15s ease; }
     .check:hover{ background: rgba(255,255,255,0.04); }
-    html[data-theme="light"] .check:hover{
-      background: rgba(47,111,236,0.06);
-    }
+    html[data-theme="light"] .check:hover{ background: rgba(47,111,236,0.06); }
     .check input{ margin-top: 2px; }
     .check .txt{ font-size: 13px; color: var(--text); }
     .check .hint{ font-size: 12px; color: var(--muted2); margin-top: 2px; }
-
     .banner{
       margin-top: 12px;
       padding: 12px 12px;
@@ -322,15 +283,7 @@
       line-height: 1.4;
     }
     .banner strong{ color: rgba(255,255,255,0.95); }
-    .ico{
-      width: 20px; height: 20px;
-      border-radius: 8px;
-      background: rgba(255, 209, 102, 0.22);
-      border: 1px solid rgba(255, 209, 102, 0.35);
-      display:flex; align-items:center; justify-content:center;
-      font-weight: 700;
-      flex: 0 0 auto;
-    }
+    .ico{ width: 20px; height: 20px; border-radius: 8px; background: rgba(255, 209, 102, 0.22); border: 1px solid rgba(255, 209, 102, 0.35); display:flex; align-items:center; justify-content:center; font-weight: 700; flex: 0 0 auto; }
     html[data-theme="light"] .banner{
       border: 1px solid rgba(255, 193, 7, 0.35);
       background: rgba(255, 193, 7, 0.16);
@@ -338,15 +291,8 @@
       box-shadow: 0 10px 24px rgba(255, 193, 7, 0.12);
     }
     html[data-theme="light"] .banner strong{ color: rgba(33, 24, 6, 0.98); }
-    html[data-theme="light"] .ico{
-      background: rgba(255, 193, 7, 0.32);
-      border-color: rgba(255, 193, 7, 0.50);
-      color: rgba(33, 24, 6, 0.95);
-    }
-
-    .status{
-      display:flex; flex-direction:column; gap:10px;
-    }
+    html[data-theme="light"] .ico{ background: rgba(255, 193, 7, 0.32); border-color: rgba(255, 193, 7, 0.50); color: rgba(33, 24, 6, 0.95); }
+    .status{ display:flex; flex-direction:column; gap:10px; }
     .scoreCard{
       padding: 14px 14px;
       border-radius: var(--radius2);
@@ -354,27 +300,18 @@
       background: rgba(255,255,255,0.05);
       display:flex; flex-direction:column; gap:10px;
     }
-    /* Pills and badges should not look washed out */
     html[data-theme="light"] .pill{
       background: rgba(255,255,255,0.92);
       border-color: rgba(16,24,40,0.14);
       color: rgba(10,18,34,0.70);
     }
-    /* Make badge colors readable on light backgrounds */
     html[data-theme="light"] .badge{
       background: rgba(16,24,40,0.04);
       border-color: rgba(16,24,40,0.14);
       color: rgba(10,18,34,0.70);
     }
-    .big{
-      display:flex; align-items:flex-end; justify-content:space-between;
-      gap: 12px;
-    }
-    .code{
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: 0.3px;
-    }
+    .big{ display:flex; align-items:flex-end; justify-content:space-between; gap: 12px; }
+    .code{ font-size: 22px; font-weight: 800; letter-spacing: 0.3px; }
     .badge{
       padding: 7px 10px;
       border-radius: 999px;
@@ -387,91 +324,22 @@
     .badge.good{ border-color: rgba(46,229,157,0.35); background: rgba(46,229,157,0.12); color: rgba(255,255,255,0.92); }
     .badge.warn{ border-color: rgba(255,209,102,0.35); background: rgba(255,209,102,0.12); color: rgba(255,255,255,0.92); }
     .badge.bad{ border-color: rgba(255,92,122,0.40); background: rgba(255,92,122,0.12); color: rgba(255,255,255,0.92); }
-    .reason{
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
-    .noteBox{
-      margin-top: 12px;
-      border-radius: var(--radius2);
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.22);
-      overflow:hidden;
-    }
-    .noteTop{
-      padding: 10px 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.10);
-      display:flex; align-items:center; justify-content:space-between;
-      gap: 10px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-    pre{
-      margin:0;
-      padding: 12px;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      font-family: var(--mono);
-      font-size: 12px;
-      line-height: 1.45;
-      color: rgba(255,255,255,0.88);
-    }
-    html[data-theme="light"] .noteBox{
-      border-color: rgba(9,14,25,0.16);
-      background: #f3f6fb;
-    }
-    html[data-theme="light"] .noteTop{
-      border-bottom-color: rgba(9,14,25,0.16);
-      color: rgba(9,14,25,0.72);
-      background: #ffffff;
-    }
-    html[data-theme="light"] pre{
-      color: rgba(9,14,25,0.92);
-    }
-
-    .toast{
-      position: fixed;
-      bottom: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.65);
-      border: 1px solid rgba(255,255,255,0.14);
-      padding: 10px 12px;
-      border-radius: 14px;
-      color: rgba(255,255,255,0.9);
-      font-size: 13px;
-      box-shadow: var(--shadow);
-      opacity: 0;
-      pointer-events:none;
-      transition: opacity 0.2s ease;
-      backdrop-filter: blur(10px);
-      max-width: 92vw;
-    }
+    .reason{ font-size: 13px; color: var(--muted); line-height: 1.45; }
+    .noteBox{ margin-top: 12px; border-radius: var(--radius2); border: 1px solid rgba(255,255,255,0.14); background: rgba(0,0,0,0.22); overflow:hidden; }
+    .noteTop{ padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.10); display:flex; align-items:center; justify-content:space-between; gap: 10px; color: var(--muted); font-size: 12px; }
+    pre{ margin:0; padding: 12px; white-space: pre-wrap; word-wrap: break-word; font-family: var(--mono); font-size: 12px; line-height: 1.45; color: rgba(255,255,255,0.88); }
+    html[data-theme="light"] .noteBox{ border-color: rgba(9,14,25,0.16); background: #f3f6fb; }
+    html[data-theme="light"] .noteTop{ border-bottom-color: rgba(9,14,25,0.16); color: rgba(9,14,25,0.72); background: #ffffff; }
+    html[data-theme="light"] pre{ color: rgba(9,14,25,0.92); }
+    .toast{ position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.65); border: 1px solid rgba(255,255,255,0.14); padding: 10px 12px; border-radius: 14px; color: rgba(255,255,255,0.9); font-size: 13px; box-shadow: var(--shadow); opacity: 0; pointer-events:none; transition: opacity 0.2s ease; backdrop-filter: blur(10px); max-width: 92vw; }
     .toast.show{ opacity: 1; }
-
     #tStatus.status-good{ color: #12b981; }
     #tStatus.status-warn{ color: #f59e0b; }
-
-    html[data-theme="light"] .badge.good{
-      background: rgba(18,185,129,0.14);
-      border-color: rgba(18,185,129,0.30);
-      color: rgba(10,18,34,0.92);
-    }
-    html[data-theme="light"] .badge.warn{
-      background: rgba(245,158,11,0.16);
-      border-color: rgba(245,158,11,0.32);
-      color: rgba(10,18,34,0.92);
-    }
-    html[data-theme="light"] .badge.bad{
-      background: rgba(239,68,68,0.14);
-      border-color: rgba(239,68,68,0.30);
-      color: rgba(10,18,34,0.92);
-    }
+    html[data-theme="light"] .badge.good{ background: rgba(18,185,129,0.14); border-color: rgba(18,185,129,0.30); color: rgba(10,18,34,0.92); }
+    html[data-theme="light"] .badge.warn{ background: rgba(245,158,11,0.16); border-color: rgba(245,158,11,0.32); color: rgba(10,18,34,0.92); }
+    html[data-theme="light"] .badge.bad{ background: rgba(239,68,68,0.14); border-color: rgba(239,68,68,0.30); color: rgba(10,18,34,0.92); }
   </style>
 </head>
-
 <body>
   <div class="shell">
     <div class="topbar">
@@ -582,9 +450,7 @@
             <div class="group">
               <h3>Problems addressed</h3>
 
-              <div class="sub" style="margin-bottom:8px;">
-                Select conditions addressed today. Do not add patient identifiers.
-              </div>
+              <div class="sub" style="margin-bottom:8px;">Select conditions addressed today. Do not add patient identifiers.</div>
 
               <div class="condGrid">
                 <label class="check"><input type="checkbox" class="cond" value="ADHD"><div class="txt">ADHD</div></label>
@@ -723,6 +589,55 @@
                 </div>
               </label>
             </div>
+
+            <div class="group">
+              <h3>Peds CN add-on fields</h3>
+
+              <div class="row" style="margin-top:0;">
+                <div class="field">
+                  <div class="label"><span>Attending appointment</span></div>
+                  <select id="attendingType">
+                    <option value="Patient">Patient</option>
+                    <option value="Patient with family/support">Patient with family/support</option>
+                    <option value="Family/support only">Family/support only</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <div class="label"><span>Supports present</span><span class="sub">Optional</span></div>
+                  <input type="text" id="supportsPresent" placeholder="Parent, caregiver, guardian" />
+                </div>
+              </div>
+
+              <label class="check"><input type="checkbox" id="locOffice" checked><div class="txt">Office location</div></label>
+              <label class="check"><input type="checkbox" id="locTelehealth"><div><div class="txt">Zoom telehealth, Oregon location confirmed</div><div class="hint">Consent note included when checked.</div></div></label>
+
+              <div class="field">
+                <div class="label"><span>Current chief complaint</span></div>
+                <textarea id="chiefComplaint" placeholder="Short summary of current concern"></textarea>
+              </div>
+
+              <div class="field">
+                <div class="label"><span>Intervention</span></div>
+                <textarea id="intervention" placeholder="Medication management and therapeutic interventions"></textarea>
+              </div>
+            </div>
+
+            <div class="group">
+              <h3>Psychotherapy and complexity</h3>
+
+              <label class="check"><input type="checkbox" id="addPsychotherapy"><div><div class="txt">Include psychotherapy add-on (90833)</div><div class="hint">Requires at least 16 minutes.</div></div></label>
+              <div class="field">
+                <div class="label"><span>Therapy minutes</span><span class="sub">Used when 90833 selected</span></div>
+                <input id="therapyMinutes" type="number" min="0" max="120" value="0" />
+              </div>
+
+              <label class="check"><input type="checkbox" id="icPlay"><div class="txt">Interactive complexity due to play equipment/incentives</div></label>
+              <label class="check"><input type="checkbox" id="icConversation"><div class="txt">Interactive complexity due to maladaptive communication management</div></label>
+              <label class="check"><input type="checkbox" id="icAutism"><div class="txt">Interactive complexity due to autism communication barriers</div></label>
+
+              <label class="check"><input type="checkbox" id="careCoordIncluded"><div><div class="txt">Care coordination documented</div><div class="hint">Meets one of the recommended green sections.</div></div></label>
+              <label class="check"><input type="checkbox" id="dataReviewedIncluded"><div><div class="txt">Other data/records reviewed documented</div><div class="hint">Meets one of the recommended green sections.</div></div></label>
+            </div>
           </div>
 
           <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px;">
@@ -755,6 +670,7 @@
             <div class="reason" id="reasonText">
               Select checklist items to strengthen support for low or moderate MDM. Add time if you prefer time based coding.
             </div>
+            <div class="reason" id="complianceText"></div>
           </div>
 
           <div class="noteBox">
@@ -772,7 +688,7 @@
             <div class="sub" style="margin-bottom:6px;">What this prototype is doing</div>
             <div class="reason">
               It maps selected items to a simplified MDM signal. Problems, data, and risk contribute. Prescription management and two problems usually push toward 99214.
-              If you turn on time mode and enter 30 to 39 minutes, it will prefer 99214.
+              If time mode is on, documented time can override MDM. Pediatric template add-ons include 90833 (therapy 16+ min) and 90785 when interactive complexity justification is selected.
             </div>
           </div>
         </div>
@@ -790,6 +706,7 @@
       suggestedCode: document.getElementById("suggestedCode"),
       badge: document.getElementById("badge"),
       reasonText: document.getElementById("reasonText"),
+      complianceText: document.getElementById("complianceText"),
       notePreview: document.getElementById("notePreview"),
       previewMeta: document.getElementById("previewMeta"),
       btnCopyPreview: document.getElementById("btnCopyPreview"),
@@ -806,7 +723,20 @@
       tCoord: document.getElementById("tCoord"),
       tStatus: document.getElementById("tStatus"),
       tWarn: document.getElementById("tWarn"),
-      toast: document.getElementById("toast")
+      toast: document.getElementById("toast"),
+      attendingType: document.getElementById("attendingType"),
+      supportsPresent: document.getElementById("supportsPresent"),
+      locOffice: document.getElementById("locOffice"),
+      locTelehealth: document.getElementById("locTelehealth"),
+      chiefComplaint: document.getElementById("chiefComplaint"),
+      intervention: document.getElementById("intervention"),
+      addPsychotherapy: document.getElementById("addPsychotherapy"),
+      therapyMinutes: document.getElementById("therapyMinutes"),
+      icPlay: document.getElementById("icPlay"),
+      icConversation: document.getElementById("icConversation"),
+      icAutism: document.getElementById("icAutism"),
+      careCoordIncluded: document.getElementById("careCoordIncluded"),
+      dataReviewedIncluded: document.getElementById("dataReviewedIncluded")
     };
 
     const checks = [
@@ -880,6 +810,12 @@
       Object.values(checks).forEach(c => c.checked = false);
       conditionChecks.forEach(c => c.checked = false);
       if(probWorsening) probWorsening.checked = false;
+      [
+        "addPsychotherapy","icPlay","icConversation","icAutism","careCoordIncluded","dataReviewedIncluded"
+      ].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.checked = false;
+      });
     }
 
     function setLowDefaults(){
@@ -893,20 +829,21 @@
     function setModerateDefaults(){
       clearAllChecks();
       setConditions(["ADHD","Anxiety"]);
-      ["d1","r1","r2","r3","m1","m2","m4"].forEach(id => checks[id].checked = true);
+      ["d1","r1","r2","r3","m1","m2","m4","careCoordIncluded"].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.checked = true;
+      });
       render();
       toast("Moderate complexity set applied.");
     }
 
-    function levelRank(lvl){
-      return ({ minimal: 0, low: 1, moderate: 2, high: 3 })[lvl] ?? 0;
-    }
+    function levelRank(lvl){ return ({ minimal: 0, low: 1, moderate: 2, high: 3 })[lvl] ?? 0; }
 
     function scoreProblems(){
       const count = conditionChecks.filter(c => c.checked).length;
       const worsening = probWorsening.checked;
-
       const selected = conditionChecks.filter(c => c.checked).map(c => c.value);
+
       if(problemSummary){
         if(selected.length){
           problemSummary.textContent =
@@ -926,7 +863,6 @@
       const testsOrRecords = ["d3","d4"].filter(id => checks[id].checked).length;
       const ratingScales = checks.d1.checked;
       const independentHistorian = checks.d2.checked;
-
       if(independentHistorian) return "moderate";
       if((ratingScales && testsOrRecords >= 1) || testsOrRecords >= 2) return "moderate";
       if(testsOrRecords >= 1) return "low";
@@ -943,7 +879,6 @@
     function mdmFrom2of3(problemLvl, dataLvl, riskLvl){
       const levels = [problemLvl, dataLvl, riskLvl];
       const countAtLeast = (lvl) => levels.filter(x => levelRank(x) >= levelRank(lvl)).length;
-
       if(countAtLeast("high") >= 2) return "high";
       if(countAtLeast("moderate") >= 2) return "moderate";
       if(countAtLeast("low") >= 2) return "low";
@@ -986,32 +921,44 @@
         return "Risk: Minimal (risk management not specified).";
       })();
 
-      return {
-        problems,
-        data,
-        risk,
-        mdm,
-        justification: `${problemJust} ${dataJust} ${riskJust}`
-      };
+      return { problems, data, risk, mdm, justification: `${problemJust} ${dataJust} ${riskJust}` };
     }
 
     function scoreTime(){
       const mins = Number(els.timeMinutes.value || 0);
-
       if(mins < 10) return null;
       if(mins <= 19) return { code: "99212", label: "Time 10–19 minutes", mins };
       if(mins <= 29) return { code: "99213", label: "Time 20–29 minutes", mins };
       if(mins <= 39) return { code: "99214", label: "Time 30–39 minutes", mins };
       if(mins <= 54) return { code: "99215", label: "Time 40–54 minutes", mins };
-
       const units = Math.floor((mins - 54) / 15);
       const suffix = units > 0 ? ` + 99417 x${units}` : "";
-      return {
-        code: `99215${suffix}`,
-        label: `Time 55+ minutes (Prolonged: 99417 x${units})`,
-        mins,
-        prolongedUnits: units
-      };
+      return { code: `99215${suffix}`, label: `Time 55+ minutes (Prolonged: 99417 x${units})`, mins, prolongedUnits: units };
+    }
+
+    function getAddOnCodes(){
+      const addOns = [];
+      const therapyMinutes = Number(els.therapyMinutes.value || 0);
+      const hasInteractiveComplexity = els.icPlay.checked || els.icConversation.checked || els.icAutism.checked;
+
+      if(els.addPsychotherapy.checked && therapyMinutes >= 16) addOns.push("90833");
+      if(hasInteractiveComplexity) addOns.push("90785");
+      return addOns;
+    }
+
+    function getComplianceWarnings(timeBasisUsed){
+      const warnings = [];
+      const emMinutes = Number(els.timeMinutes.value || 0);
+      const therapyMinutes = Number(els.therapyMinutes.value || 0);
+      const hasGreenSection = els.careCoordIncluded.checked || els.dataReviewedIncluded.checked;
+      const hasInteractiveComplexity = els.icPlay.checked || els.icConversation.checked || els.icAutism.checked;
+
+      if(timeBasisUsed && emMinutes > 0 && emMinutes < 20) warnings.push("E/M time entered is under 20 minutes.");
+      if(els.addPsychotherapy.checked && therapyMinutes < 16) warnings.push("Psychotherapy add-on selected but therapy time is under 16 minutes.");
+      if(!hasGreenSection) warnings.push("Consider documenting either care coordination or other data/records reviewed.");
+      if(hasInteractiveComplexity && !els.locTelehealth.checked && !els.locOffice.checked) warnings.push("Select a service location when using interactive complexity.");
+
+      return warnings;
     }
 
     function fill5MinuteDropdown(sel){
@@ -1034,9 +981,7 @@
       fill5MinuteDropdown(els.tCoord);
     }
 
-    function timeModeOn(){
-      return useTimeWhenAvailable && !!scoreTime();
-    }
+    function timeModeOn(){ return useTimeWhenAvailable && !!scoreTime(); }
 
     function getBreakdown(){
       const prep = Number(els.tPrep?.value || 0);
@@ -1051,7 +996,6 @@
     function renderBreakdownStatus(){
       if(!els.timeBreakdownBox) return;
       els.timeBreakdownBox.style.display = timeModeOn() ? "block" : "none";
-
       const mins = Number(els.timeMinutes.value || 0);
       const b = getBreakdown();
       if(els.tStatus) {
@@ -1077,21 +1021,36 @@
       if(t) lines.push(t);
     }
 
-    function joinSentences(arr){
-      return arr.filter(Boolean).join(" ");
-    }
+    function joinSentences(arr){ return arr.filter(Boolean).join(" "); }
 
     function buildNote(signals, chosen){
-      const t = templates[currentTemplate];
-      const visitType = els.visitType.value;
+      const t = templates[currentTemplate || "adhd"];
+      const visitType = els.visitType.value || "Not specified";
+      const supports = (els.supportsPresent.value || "").trim();
+      const locations = [
+        els.locOffice.checked ? "Office" : "",
+        els.locTelehealth.checked ? "Zoom telehealth (Oregon confirmed)" : ""
+      ].filter(Boolean).join("; ") || "Not specified";
 
       const lines = [];
-      addLine(lines, "PSYCHIATRY E AND M MEDICATION MANAGEMENT NOTE (Established Patient)");
-      addLine(lines, "Visit type: " + visitType);
-      addLine(lines, "Diagnoses: " + t.dx.join(", "));
+      addLine(lines, "CHILDREN'S PROGRAM E/M PROGRESS NOTE (Prototype)");
+      addLine(lines, `Visit type: ${visitType}`);
+      addLine(lines, `Attending appointment: ${els.attendingType.value}${supports ? ` | Supports: ${supports}` : ""}`);
+      addLine(lines, `Location: ${locations}`);
+
+      if(els.locTelehealth.checked){
+        addLine(lines, "Telehealth consent reviewed and verbal consent obtained for telehealth services.");
+      }
+
+      const dxFromConditions = conditionChecks.filter(c => c.checked).map(c => c.value);
+      const diagnoses = dxFromConditions.length ? dxFromConditions : t.dx;
+      addLine(lines, `Diagnoses: ${diagnoses.join(", ")}`);
       addLine(lines, "");
 
-      addLine(lines, "Interval history: " + t.symptomLine);
+      const chief = (els.chiefComplaint.value || "").trim() || "Follow-up for symptom monitoring and medication management.";
+      addLine(lines, `Current chief complaint: ${chief}`);
+      addLine(lines, `History of presenting illness: ${t.symptomLine}`);
+      addLine(lines, "History based on report from those present and record review documented below.");
       addLine(lines, "");
 
       if(checks.r2.checked){
@@ -1099,64 +1058,76 @@
       }
 
       if(checks.m1.checked){
-        addLine(lines, "MSE: Appearance and behavior appropriate. Speech normal. Thought process linear. Insight and judgment fair to good.");
+        addLine(lines, "Comprehensive exam/MSE: Appearance and behavior appropriate, speech normal, thought process linear, insight and judgment fair to good.");
       }
-
       if(checks.m2.checked){
-        addLine(lines, "Function: School, home routine, relationships, and sleep routine reviewed. Functional impact discussed.");
+        addLine(lines, "Functional status: School, home routine, peer/family interactions, and sleep routine reviewed.");
       }
-
       if(checks.m3.checked){
-        addLine(lines, "Substance: Screening documented as age and setting appropriate.");
+        addLine(lines, "Substance use screening documented as age and setting appropriate.");
       }
 
       const dataSentences = [];
-      if(checks.d1.checked) dataSentences.push("Rating scales reviewed (for example PHQ 9, GAD 7, Vanderbilt, ASRS as applicable).");
-      if(checks.d2.checked) dataSentences.push("Collateral obtained from caregiver as an independent historian.");
-      if(checks.d3.checked) dataSentences.push("Outside records reviewed (for example prior evaluation, school report, therapist note, or PCP note as applicable).");
+      if(checks.d1.checked) dataSentences.push("Rating scales/questionnaires reviewed.");
+      if(checks.d2.checked) dataSentences.push("Collateral history obtained from caregiver as independent historian.");
+      if(checks.d3.checked) dataSentences.push("Outside records reviewed (school, therapist, PCP, or prior evaluations as applicable).");
       if(checks.d4.checked) dataSentences.push("Labs reviewed or ordered as clinically appropriate.");
-
       if(dataSentences.length){
-        addLine(lines, "Data: " + joinSentences(dataSentences));
+        addLine(lines, "Other data/records reviewed: " + joinSentences(dataSentences));
+      }
+
+      const intervention = (els.intervention.value || "").trim();
+      if(intervention){
+        addLine(lines, "Intervention: " + intervention);
       }
 
       if(checks.r1.checked){
-        addLine(lines, "Medications: Prescription drug management performed today. Risks, benefits, alternatives, and monitoring plan reviewed.");
+        addLine(lines, "Prescription drug management completed. Risks, benefits, alternatives, side effects, and monitoring plan reviewed.");
       } else if(checks.r3.checked){
-        addLine(lines, "Medications: Current regimen reviewed. Side effects reviewed and monitoring guidance discussed.");
+        addLine(lines, "Medication side effects and tolerability reviewed. Monitoring guidance discussed.");
       }
 
       if(checks.r4.checked){
-        addLine(lines, "Controlled substances: Monitoring and policy requirements discussed as applicable (for example PDMP review, refill expectations, safe storage).");
+        addLine(lines, "Controlled substance monitoring and policy expectations reviewed when applicable.");
       }
 
-      const planSentences = [];
-      planSentences.push("Plan: Continue treatment plan with shared decision making.");
-      if(checks.m4.checked){
-        planSentences.push("Follow up interval set and return precautions reviewed.");
-      }
       addLine(lines, "");
-      addLine(lines, joinSentences(planSentences));
+      addLine(lines, "Counseling topics addressed as clinically relevant: differential diagnosis, treatment options, medication risks/benefits, and adherence risks.");
+
+      if(els.careCoordIncluded.checked){
+        addLine(lines, "Care coordination and education documented with relevant parties as needed (MD, counselor, school, PCP, or agency).");
+      }
+
+      const icReasons = [];
+      if(els.icPlay.checked) icReasons.push("access to play equipment used to facilitate engagement due to reluctance");
+      if(els.icConversation.checked) icReasons.push("therapeutic communication management required between session participants");
+      if(els.icAutism.checked) icReasons.push("communication challenges related to autism diagnosis");
+      if(icReasons.length){
+        addLine(lines, `Interactive complexity justification: ${icReasons.join("; ")}.`);
+      }
+
+      addLine(lines, "");
+      addLine(lines, "Treatment plan: Continue plan with shared decision-making, monitor response and adverse effects, and follow-up interval set with return precautions.");
       addLine(lines, "");
 
       if(chosen.basis === "time"){
         const mins = chosen.timeMinutes;
         const b = getBreakdown();
-
-        addLine(lines, `MDM and coding summary: Time based selection used. Total time on date of service: ${mins} minutes.`);
-
+        addLine(lines, `E/M coding summary: Time-based selection used. Total E/M time on date of service: ${mins} minutes.`);
         if(b.total === mins && mins > 0){
-          addLine(lines, "");
-          addLine(lines, "This level of service is based on total time spent by the provider on the calendar day of the encounter.");
-          addLine(lines, "");
-          if(b.prep) addLine(lines, `* ${b.prep} minutes: Preparing to see the patient, including review of prior records and tests.`);
-          if(b.evalCounsel) addLine(lines, `* ${b.evalCounsel} minutes: Performing a medically appropriate examination/evaluation and providing face-to-face counseling and educating the patient/caregiver regarding the treatment plan and medication side effects.`);
-          if(b.orders) addLine(lines, `* ${b.orders} minutes: Ordering medications, tests, or procedures.`);
-          if(b.doc) addLine(lines, `* ${b.doc} minutes: Documenting clinical information in the electronic health record.`);
-          if(b.coord) addLine(lines, `* ${b.coord} minutes: Care coordination and communication with other health care professionals (when not separately reported).`);
+          if(b.prep) addLine(lines, `- ${b.prep} min preparing/reviewing prior records/tests/scales`);
+          if(b.evalCounsel) addLine(lines, `- ${b.evalCounsel} min evaluation/counseling/education`);
+          if(b.orders) addLine(lines, `- ${b.orders} min ordering meds/tests/procedures`);
+          if(b.doc) addLine(lines, `- ${b.doc} min documentation in EHR`);
+          if(b.coord) addLine(lines, `- ${b.coord} min care coordination/communication`);
         }
       } else {
-        addLine(lines, "MDM and coding summary: " + signals.justification);
+        addLine(lines, "MDM coding summary: " + signals.justification);
+      }
+
+      if(els.addPsychotherapy.checked){
+        const tMins = Number(els.therapyMinutes.value || 0);
+        addLine(lines, `Psychotherapy add-on: ${tMins} minutes documented.`);
       }
 
       return lines.join("\n");
@@ -1165,7 +1136,6 @@
     function render(){
       const signals = scoreMDM();
       const timeScore = scoreTime();
-
       let mappedCode = "99213";
       if(signals.mdm === "high") mappedCode = "99215";
       else if(signals.mdm === "moderate") mappedCode = "99214";
@@ -1173,19 +1143,18 @@
       else if(signals.mdm === "minimal") mappedCode = "99212";
 
       let chosen = { basis: "mdm", code: mappedCode };
-
       if(useTimeWhenAvailable && timeScore){
         chosen = { basis: "time", code: timeScore.code, timeMinutes: Number(els.timeMinutes.value || 0), timeLabel: timeScore.label };
       }
 
-      const code = chosen.code;
-      els.suggestedCode.textContent = code;
+      const addOns = getAddOnCodes();
+      const combinedCode = addOns.length ? `${chosen.code} + ${addOns.join(" + ")}` : chosen.code;
+      els.suggestedCode.textContent = combinedCode;
 
       if(chosen.basis === "time"){
         els.badge.className = "badge good";
         els.badge.textContent = chosen.timeLabel;
-        els.reasonText.textContent =
-          "Suggested by total time. Keep documentation medically appropriate, then copy the note into the EHR.";
+        els.reasonText.textContent = "Suggested by total time. Keep documentation medically appropriate, then copy the note into the EHR.";
       } else {
         if(signals.mdm === "moderate"){
           els.badge.className = "badge good";
@@ -1198,10 +1167,12 @@
         } else {
           els.badge.className = "badge bad";
           els.badge.textContent = "Based on MDM: minimal";
-          els.reasonText.textContent =
-            signals.justification + " Add documentation for problems, data, and risk elements that are clinically true.";
+          els.reasonText.textContent = signals.justification + " Add documentation for problems, data, and risk elements that are clinically true.";
         }
       }
+
+      const warnings = getComplianceWarnings(chosen.basis === "time");
+      els.complianceText.textContent = warnings.length ? "Compliance checks: " + warnings.join(" ") : "Compliance checks: no timing or template flags detected.";
 
       const note = buildNote(signals, chosen);
       els.notePreview.textContent = note;
@@ -1216,11 +1187,7 @@
 
     function copyNote(){
       const txt = els.notePreview.textContent;
-      navigator.clipboard.writeText(txt).then(()=>{
-        toast("Note copied to clipboard.");
-      }).catch(()=>{
-        toast("Copy failed. Your browser may block clipboard access.");
-      });
+      navigator.clipboard.writeText(txt).then(()=>{ toast("Note copied to clipboard."); }).catch(()=>{ toast("Copy failed. Your browser may block clipboard access."); });
     }
 
     function clearTemplateSelection(){
@@ -1235,12 +1202,25 @@
     function clearPatientInfo(){
       const checkboxes = Array.from(document.querySelectorAll("input[type=\"checkbox\"]"));
       checkboxes.forEach(field => { field.checked = false; });
+      const texts = Array.from(document.querySelectorAll("textarea, input[type=\"text\"]"));
+      texts.forEach(field => { field.value = ""; });
+
+      els.locOffice.checked = true;
       els.visitType.value = "";
       els.timeMinutes.value = 0;
+      els.therapyMinutes.value = 0;
+      els.attendingType.value = "Patient";
       useTimeWhenAvailable = true;
       els.btnToggleTime.textContent = "Time mode enabled";
       clearTemplateSelection();
-      render();
+      els.suggestedCode.textContent = "";
+      els.badge.className = "badge";
+      els.badge.textContent = "No suggestion";
+      els.reasonText.textContent = "";
+      els.complianceText.textContent = "";
+      els.notePreview.textContent = "";
+      if(problemSummary) problemSummary.textContent = "";
+      renderBreakdownStatus();
       toast("Patient info cleared.");
     }
 
@@ -1253,16 +1233,29 @@
     }
 
     els.tabs.forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        setTemplate(btn.dataset.template);
-      });
+      btn.addEventListener("click", ()=>{ setTemplate(btn.dataset.template); });
     });
 
     Object.values(checks).forEach(c => c.addEventListener("change", render));
     conditionChecks.forEach(c => c.addEventListener("change", render));
     probWorsening.addEventListener("change", render);
-    els.visitType.addEventListener("change", render);
-    els.timeMinutes.addEventListener("input", render);
+    [
+      "visitType","timeMinutes","therapyMinutes","attendingType","supportsPresent","chiefComplaint","intervention"
+    ].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.addEventListener(id === "timeMinutes" || id === "therapyMinutes" ? "input" : "change", render);
+      if(el && (id === "chiefComplaint" || id === "intervention" || id === "supportsPresent")) {
+        el.addEventListener("input", render);
+      }
+    });
+
+    [
+      "locOffice","locTelehealth","addPsychotherapy","icPlay","icConversation","icAutism","careCoordIncluded","dataReviewedIncluded"
+    ].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.addEventListener("change", render);
+    });
+
     ["tPrep","tEvalCounsel","tOrders","tDoc","tCoord"].forEach(id => {
       const el = document.getElementById(id);
       if(el) el.addEventListener("change", render);

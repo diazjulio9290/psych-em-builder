@@ -638,6 +638,15 @@
               <label class="check"><input type="checkbox" id="careCoordIncluded"><div><div class="txt">Care coordination documented</div><div class="hint">Meets one of the recommended green sections.</div></div></label>
               <label class="check"><input type="checkbox" id="dataReviewedIncluded"><div><div class="txt">Other data/records reviewed documented</div><div class="hint">Meets one of the recommended green sections.</div></div></label>
             </div>
+
+            <div class="group">
+              <h3>Provider notes</h3>
+              <div class="sub" style="margin-bottom:8px;">Optional free text that will be included in the final note preview.</div>
+              <div class="field">
+                <div class="label"><span>Additional clinical notes</span><span class="sub">Optional</span></div>
+                <textarea id="providerNotes" placeholder="Add anything not captured above (context, family updates, school plan, exam details, etc.)"></textarea>
+              </div>
+            </div>
           </div>
 
           <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px;">
@@ -730,6 +739,7 @@
       locTelehealth: document.getElementById("locTelehealth"),
       chiefComplaint: document.getElementById("chiefComplaint"),
       intervention: document.getElementById("intervention"),
+      providerNotes: document.getElementById("providerNotes"),
       addPsychotherapy: document.getElementById("addPsychotherapy"),
       therapyMinutes: document.getElementById("therapyMinutes"),
       icPlay: document.getElementById("icPlay"),
@@ -1081,6 +1091,11 @@
         addLine(lines, "Intervention: " + intervention);
       }
 
+      const providerNotes = (els.providerNotes.value || "").trim();
+      if(providerNotes){
+        addLine(lines, "Provider additional notes: " + providerNotes);
+      }
+
       if(checks.r1.checked){
         addLine(lines, "Prescription drug management completed. Risks, benefits, alternatives, side effects, and monitoring plan reviewed.");
       } else if(checks.r3.checked){
@@ -1240,11 +1255,11 @@
     conditionChecks.forEach(c => c.addEventListener("change", render));
     probWorsening.addEventListener("change", render);
     [
-      "visitType","timeMinutes","therapyMinutes","attendingType","supportsPresent","chiefComplaint","intervention"
+      "visitType","timeMinutes","therapyMinutes","attendingType","supportsPresent","chiefComplaint","intervention","providerNotes"
     ].forEach(id => {
       const el = document.getElementById(id);
       if(el) el.addEventListener(id === "timeMinutes" || id === "therapyMinutes" ? "input" : "change", render);
-      if(el && (id === "chiefComplaint" || id === "intervention" || id === "supportsPresent")) {
+      if(el && (id === "chiefComplaint" || id === "intervention" || id === "supportsPresent" || id === "providerNotes")) {
         el.addEventListener("input", render);
       }
     });
